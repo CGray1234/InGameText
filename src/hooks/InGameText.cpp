@@ -26,6 +26,8 @@ MAKE_AUTO_HOOK_MATCH(InGameText, &GlobalNamespace::GameplayCoreInstaller::Instal
         screen->SetActive(true);
         
         TextModel->set_fontSize(getModConfig().TextSize.GetValue());
+
+        TextModel->set_color(getModConfig().TextQolor.GetValue());
         
     } else {
         screen->SetActive(false);
