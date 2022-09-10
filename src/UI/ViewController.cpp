@@ -43,9 +43,11 @@ void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy
 
         UnityEngine::GameObject *container = CreateScrollView(get_transform());
 
-        floatingScreen = CreateFloatingScreen(UnityEngine::Vector2(getModConfig().TextSize.GetValue()), UnityEngine::Vector3(getModConfig().TextPosition.GetValue()), UnityEngine::Vector3(getModConfig().TextRotation.GetValue()), 0.0f, false, false);
+        floatingScreen = CreateFloatingScreen(UnityEngine::Vector2(1.0f, 1.0f), UnityEngine::Vector3(getModConfig().TextPosition.GetValue()), UnityEngine::Vector3(getModConfig().TextRotation.GetValue()), 0.0f, false, false);
 
-        CreateText(floatingScreen->get_transform(), getModConfig().InGameText.GetValue(), UnityEngine::Vector2(0.0f, 0.0f), UnityEngine::Vector2(getModConfig().TextSize.GetValue()));
+        auto Text = CreateText(floatingScreen->get_transform(), getModConfig().InGameText.GetValue());
+
+        Text->set_fontSize(getModConfig().TextSize.GetValue());
 
         AddConfigValueToggle(container->get_transform(), getModConfig().InGameTextEnabled)->get_gameObject();
 
@@ -69,7 +71,7 @@ void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy
 
         CreateText(container->get_transform(), "");
 
-        AddConfigValueIncrementVector2(container->get_transform(), getModConfig().TextSize, 1, 0.5);
+        AddConfigValueIncrementFloat(container->get_transform(), getModConfig().TextSize, 1, 0.5, 0, 10000);
         CreateText(container->get_transform(), "");
         AddConfigValueIncrementVector3(container->get_transform(), getModConfig().TextPosition, 1, 0.5);
         CreateText(container->get_transform(), "");

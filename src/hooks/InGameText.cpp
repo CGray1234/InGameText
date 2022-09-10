@@ -17,11 +17,15 @@ MAKE_AUTO_HOOK_MATCH(InGameText, &GlobalNamespace::GameplayCoreInstaller::Instal
 
     InGameText(self);
 
-    screen = CreateFloatingScreen(UnityEngine::Vector2(getModConfig().TextSize.GetValue()), UnityEngine::Vector3(getModConfig().TextPosition.GetValue()), UnityEngine::Vector3(getModConfig().TextRotation.GetValue()), 0.0f, false, false);
+    screen = CreateFloatingScreen(UnityEngine::Vector2(1.0f, 1.0f), UnityEngine::Vector3(getModConfig().TextPosition.GetValue()), UnityEngine::Vector3(getModConfig().TextRotation.GetValue()), 0.0f, false, false);
 
     if (getModConfig().InGameTextEnabled.GetValue() == true) {
+
+        auto TextModel = CreateText(screen->get_transform(), getModConfig().InGameText.GetValue());
+
+        screen->SetActive(true);
         
-        CreateText(screen->get_transform(), getModConfig().InGameText.GetValue(), UnityEngine::Vector2(0.0f, 0.0f), UnityEngine::Vector2(getModConfig().TextSize.GetValue()));
+        TextModel->set_fontSize(getModConfig().TextSize.GetValue());
         
     } else {
         screen->SetActive(false);
