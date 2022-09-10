@@ -40,6 +40,7 @@ MAKE_AUTO_HOOK_MATCH(OpenPause, &GlobalNamespace::PauseMenuManager::Start, void,
     auto toggleScreen = self->levelBar->get_transform()->get_parent()->get_parent()->GetComponent<UnityEngine::Canvas *>();
 
     //AddConfigValueStringSetting(toggleScreen->get_transform(), getModConfig().InGameText)->get_gameObject();
+
     AddConfigValueToggle(toggleScreen->get_transform(), getModConfig().InGameTextEnabled)->get_gameObject();
 }
 

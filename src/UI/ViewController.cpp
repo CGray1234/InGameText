@@ -48,6 +48,7 @@ void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy
         auto Text = CreateText(floatingScreen->get_transform(), getModConfig().InGameText.GetValue());
 
         Text->set_fontSize(getModConfig().TextSize.GetValue());
+        Text->set_color(getModConfig().TextQolor.GetValue());
 
         AddConfigValueToggle(container->get_transform(), getModConfig().InGameTextEnabled)->get_gameObject();
 
@@ -65,10 +66,20 @@ void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy
                 floatingScreen->SetActive(true);
             }
         });
+
         auto applyChangesButton = CreateUIButton(container->get_transform(), "Apply Changes To Main Menu", [&]() {
-            Resources::FindObjectsOfTypeAll<GlobalNamespace::MenuTransitionsHelper*>()[0]->RestartGame(nullptr);
+            UnityEngine::Object::DestroyImmediate(floatingScreen->get_gameObject());
+
+            floatingScreen = CreateFloatingScreen(UnityEngine::Vector2(1.0f, 1.0f), UnityEngine::Vector3(getModConfig().TextPosition.GetValue()), UnityEngine::Vector3(getModConfig().TextRotation.GetValue()), 0.0f, false, false);
+
+            auto Text = CreateText(floatingScreen->get_transform(), getModConfig().InGameText.GetValue());
+
+            Text->set_fontSize(getModConfig().TextSize.GetValue());
+            Text->set_color(getModConfig().TextQolor.GetValue());
         });
 
+        CreateText(container->get_transform(), "");
+        AddConfigValueColorPicker(container->get_transform(), getModConfig().TextQolor);
         CreateText(container->get_transform(), "");
 
         AddConfigValueIncrementFloat(container->get_transform(), getModConfig().TextSize, 1, 0.5, 0, 10000);
