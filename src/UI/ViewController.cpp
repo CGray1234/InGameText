@@ -73,7 +73,7 @@ void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy
         CreateText(container->get_transform(), "");
         AddConfigValueIncrementVector3(container->get_transform(), getModConfig().TextPosition, 1, 0.5);
         CreateText(container->get_transform(), "");
-        AddConfigValueIncrementVector3(container->get_transform(), getModConfig().TextRotation,  1, 0.5);
+        AddConfigValueIncrementVector3(container->get_transform(), getModConfig().TextRotation,  1, 1);
     }
 }
 
