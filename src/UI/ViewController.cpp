@@ -7,6 +7,7 @@
 #include "GlobalNamespace/MenuTransitionsHelper.hpp"
 
 #include "UnityEngine/Resources.hpp"
+#include "UnityEngine/Quaternion.hpp"
 
 #include "UI/ViewController.hpp"
 
@@ -43,18 +44,33 @@ void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy
 
         UnityEngine::GameObject *container = CreateScrollView(get_transform());
 
-        floatingScreen = CreateFloatingScreen(UnityEngine::Vector2(1.0f, 1.0f), UnityEngine::Vector3(getModConfig().TextPosition.GetValue()), UnityEngine::Vector3(getModConfig().TextRotation.GetValue()), 0.0f, false, false);
+        floatingScreen = CreateFloatingScreen(UnityEngine::Vector2(1.0f, 1.0f), UnityEngine::Vector3(getModConfig().PositionX.GetValue(), getModConfig().PositionY.GetValue(), getModConfig().PositionZ.GetValue()), UnityEngine::Vector3(getModConfig().RotationX.GetValue(), getModConfig().RotationY.GetValue(), getModConfig().RotationZ.GetValue()), 0.0f, false, false);
 
         auto Text = CreateText(floatingScreen->get_transform(), getModConfig().InGameText.GetValue());
 
         Text->set_fontSize(getModConfig().TextSize.GetValue());
         Text->set_color(getModConfig().TextQolor.GetValue());
 
-        AddConfigValueToggle(container->get_transform(), getModConfig().InGameTextEnabled)->get_gameObject();
+        //AddConfigValueToggle(container->get_transform(), getModConfig().InGameTextEnabled)->get_gameObject();
+
+        CreateToggle(container->get_transform(), "Enable In-Game Text", getModConfig().InGameTextEnabled.GetValue(),
+            [=](bool value) {
+                getModConfig().InGameTextEnabled.SetValue(value);
+
+                floatingScreen->SetActive(value);
+            }
+        );
 
         CreateText(container->get_transform(), "");
 
-        AddConfigValueStringSetting(container->get_transform(), getModConfig().InGameText)->get_gameObject();
+        //AddConfigValueStringSetting(container->get_transform(), getModConfig().InGameText)->get_gameObject();
+        CreateStringSetting(container->get_transform(), "In-Game Text", getModConfig().InGameText.GetValue(), 
+            [=](std::string value) {
+                getModConfig().InGameText.SetValue(value);
+
+                Text->SetText(value);
+            }
+        );
 
         CreateText(container->get_transform(), "");
 
@@ -67,26 +83,93 @@ void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy
             }
         });
 
-        auto applyChangesButton = CreateUIButton(container->get_transform(), "Apply Changes To Main Menu", [&]() {
-            UnityEngine::Object::DestroyImmediate(floatingScreen->get_gameObject());
+        // auto applyChangesButton = CreateUIButton(container->get_transform(), "Apply Changes To Main Menu", [&]() {
+        //     UnityEngine::Object::DestroyImmediate(floatingScreen->get_gameObject());
 
-            floatingScreen = CreateFloatingScreen(UnityEngine::Vector2(1.0f, 1.0f), UnityEngine::Vector3(getModConfig().TextPosition.GetValue()), UnityEngine::Vector3(getModConfig().TextRotation.GetValue()), 0.0f, false, false);
+        //     floatingScreen = CreateFloatingScreen(UnityEngine::Vector2(1.0f, 1.0f), UnityEngine::Vector3(getModConfig().TextPosition.GetValue()), UnityEngine::Vector3(getModConfig().TextRotation.GetValue()), 0.0f, false, false);
 
-            auto Text = CreateText(floatingScreen->get_transform(), getModConfig().InGameText.GetValue());
+        //     auto Text = CreateText(floatingScreen->get_transform(), getModConfig().InGameText.GetValue());
 
-            Text->set_fontSize(getModConfig().TextSize.GetValue());
-            Text->set_color(getModConfig().TextQolor.GetValue());
-        });
+        //     Text->set_fontSize(getModConfig().TextSize.GetValue());
+        //     Text->set_color(getModConfig().TextQolor.GetValue());
+        // });
 
         CreateText(container->get_transform(), "");
-        AddConfigValueColorPicker(container->get_transform(), getModConfig().TextQolor);
-        CreateText(container->get_transform(), "");
+        //AddConfigValueColorPicker(container->get_transform(), getModConfig().TextQolor);
+        CreateColorPicker(container->get_transform(), "Text Color", getModConfig().TextQolor.GetValue(), 
+            [=](UnityEngine::Color value) {
+                getModConfig().TextQolor.SetValue(value);
 
-        AddConfigValueIncrementFloat(container->get_transform(), getModConfig().TextSize, 1, 0.5, 0, 10000);
+                Text->set_color(value);
+            }
+        );
         CreateText(container->get_transform(), "");
-        AddConfigValueIncrementVector3(container->get_transform(), getModConfig().TextPosition, 1, 0.5);
+        //AddConfigValueIncrementFloat(container->get_transform(), getModConfig().TextSize, 1, 0.5, 0, 10000);
+        CreateIncrementSetting(container->get_transform(), "Text Size", 1, 0.5, getModConfig().TextSize.GetValue(), 
+            [=](float value) {
+                getModConfig().TextSize.SetValue(value);
+
+                Text->set_fontSize(value);
+            }
+        );
         CreateText(container->get_transform(), "");
-        AddConfigValueIncrementVector3(container->get_transform(), getModConfig().TextRotation,  1, 1);
+        //AddConfigValueIncrementVector3(container->get_transform(), getModConfig().TextPosition, 1, 0.5);
+
+        // X axis
+        CreateIncrementSetting(container->get_transform(), "Text Position X", 1, 0.5, getModConfig().PositionX.GetValue(), 
+            [=](float value) {
+                getModConfig().PositionX.SetValue(value);
+
+                floatingScreen->get_transform()->set_position(UnityEngine::Vector3(getModConfig().PositionX.GetValue(), getModConfig().PositionY.GetValue(), getModConfig().PositionZ.GetValue()));
+            }
+        );
+
+        //Y
+        CreateIncrementSetting(container->get_transform(), "Text Position Y", 1, 0.5, getModConfig().PositionY.GetValue(), 
+            [=](float value) {
+                getModConfig().PositionY.SetValue(value);
+
+                floatingScreen->get_transform()->set_position(UnityEngine::Vector3(getModConfig().PositionX.GetValue(), getModConfig().PositionY.GetValue(), getModConfig().PositionZ.GetValue()));
+            }
+        );
+
+        //Z
+        CreateIncrementSetting(container->get_transform(), "Text Position Z", 1, 0.5, getModConfig().PositionZ.GetValue(), 
+            [=](float value) {
+                getModConfig().PositionZ.SetValue(value);
+
+                floatingScreen->get_transform()->set_position(UnityEngine::Vector3(getModConfig().PositionX.GetValue(), getModConfig().PositionY.GetValue(), getModConfig().PositionZ.GetValue()));
+            }
+        );
+        CreateText(container->get_transform(), "");
+        //AddConfigValueIncrementVector3(container->get_transform(), getModConfig().TextRotation,  1, 1);
+
+        //X
+        CreateIncrementSetting(container->get_transform(), "Text Rotation X", 1, 0.5, getModConfig().RotationX.GetValue(), 
+            [=](float value) {
+                getModConfig().RotationX.SetValue(value);
+
+                Text->get_transform()->set_eulerAngles(UnityEngine::Vector3(getModConfig().RotationX.GetValue(), getModConfig().RotationY.GetValue(), getModConfig().RotationZ.GetValue()));
+            }
+        );
+
+        //Y
+        CreateIncrementSetting(container->get_transform(), "Text Rotation Y", 1, 0.5, getModConfig().RotationY.GetValue(), 
+            [=](float value) {
+                getModConfig().RotationY.SetValue(value);
+
+                Text->get_transform()->set_eulerAngles(UnityEngine::Vector3(getModConfig().RotationX.GetValue(), getModConfig().RotationY.GetValue(), getModConfig().RotationZ.GetValue()));
+            }
+        );
+
+        //Z
+        CreateIncrementSetting(container->get_transform(), "Text Rotation Z", 1, 0.5, getModConfig().RotationZ.GetValue(), 
+            [=](float value) {
+                getModConfig().RotationZ.SetValue(value);
+
+                Text->get_transform()->set_eulerAngles(UnityEngine::Vector3(getModConfig().RotationX.GetValue(), getModConfig().RotationY.GetValue(), getModConfig().RotationZ.GetValue()));
+            }
+        );
     }
 }
 

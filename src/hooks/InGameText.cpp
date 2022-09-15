@@ -17,7 +17,7 @@ MAKE_AUTO_HOOK_MATCH(InGameText, &GlobalNamespace::GameplayCoreInstaller::Instal
 
     InGameText(self);
 
-    screen = CreateFloatingScreen(UnityEngine::Vector2(1.0f, 1.0f), UnityEngine::Vector3(getModConfig().TextPosition.GetValue()), UnityEngine::Vector3(getModConfig().TextRotation.GetValue()), 0.0f, false, false);
+    screen = CreateFloatingScreen(UnityEngine::Vector2(1.0f, 1.0f), UnityEngine::Vector3(getModConfig().PositionX.GetValue(), getModConfig().PositionY.GetValue(), getModConfig().PositionZ.GetValue()), UnityEngine::Vector3(getModConfig().RotationX.GetValue(), getModConfig().RotationY.GetValue(), getModConfig().RotationZ.GetValue()), 0.0f, false, false);
 
     if (getModConfig().InGameTextEnabled.GetValue() == true) {
 
@@ -40,8 +40,6 @@ MAKE_AUTO_HOOK_MATCH(OpenPause, &GlobalNamespace::PauseMenuManager::Start, void,
     screen->SetActive(false);
 
     auto toggleScreen = self->levelBar->get_transform()->get_parent()->get_parent()->GetComponent<UnityEngine::Canvas *>();
-
-    //AddConfigValueStringSetting(toggleScreen->get_transform(), getModConfig().InGameText)->get_gameObject();
 
     AddConfigValueToggle(toggleScreen->get_transform(), getModConfig().InGameTextEnabled)->get_gameObject();
 }
