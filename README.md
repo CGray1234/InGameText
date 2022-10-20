@@ -6,7 +6,7 @@ Video showcasing the mod here: https://www.youtube.com/watch?v=ww0STS9nfyc
 
 ## Why is the Test Configuration button disabled?
 
-Whilst updating this to 1.25.1, there was an issue where after you played the game, the entire UI glitched out and the game became unplayable. I might fix this in the future.
+There is an issue with QuestUI that caused it to break. This will be fixed soon
 
 ## Credits
 
