@@ -17,7 +17,7 @@ MAKE_AUTO_HOOK_MATCH(InGameText, &GlobalNamespace::GameplayCoreInstaller::Instal
 
     InGameText(self);
 
-    screen = CreateFloatingScreen(UnityEngine::Vector2(1.0f, 1.0f), UnityEngine::Vector3(getModConfig().PositionX.GetValue(), getModConfig().PositionY.GetValue(), getModConfig().PositionZ.GetValue()), UnityEngine::Vector3(getModConfig().RotationX.GetValue(), getModConfig().RotationY.GetValue(), getModConfig().RotationZ.GetValue()), 0.0f, false, false);
+    screen = CreateFloatingScreen(UnityEngine::Vector2(0.0f, 0.0f), UnityEngine::Vector3(getModConfig().PositionX.GetValue(), getModConfig().PositionY.GetValue(), getModConfig().PositionZ.GetValue()), UnityEngine::Vector3(getModConfig().RotationX.GetValue(), getModConfig().RotationY.GetValue(), getModConfig().RotationZ.GetValue()), 0.0f, false, false);
 
     if (getModConfig().InGameTextEnabled.GetValue() == true) {
 

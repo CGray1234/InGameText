@@ -23,19 +23,20 @@ using namespace InGameText;
 
 UnityEngine::GameObject *floatingScreen;
 
-void StartTestLevel(InGameText::TextViewController* self) {
-    ArrayW<GlobalNamespace::SimpleLevelStarter*> levelStartArray = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::SimpleLevelStarter*>();
-    for (int i = 0; i < sizeof(levelStartArray); i++)
-    {
-        GlobalNamespace::SimpleLevelStarter* start = (GlobalNamespace::SimpleLevelStarter*)levelStartArray->values[i];
-        if (start->get_gameObject()->get_name()->Contains("PerformanceTestLevelButton"))
-        {
-            start->level->songName = ("In-Game Text Config Test");
-            start->StartLevel();
-            return;
-        } 
-    }
-}
+// void StartTestLevel(InGameText::TextViewController* self) {
+//     ArrayW<GlobalNamespace::SimpleLevelStarter*> levelStartArray = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::SimpleLevelStarter*>();
+//     for (int i = 0; i < sizeof(levelStartArray); i++)
+//     {
+//         GlobalNamespace::SimpleLevelStarter* start = (GlobalNamespace::SimpleLevelStarter*)levelStartArray->values[i];
+//         if (start->get_gameObject()->get_name()->Contains("PerformanceTestLevelButton"))
+//         {
+//             start->gameplayModifiers->zenMode = true;
+//             start->level->songName = ("In-Game Text Config Test");
+//             start->StartLevel();
+//             return;
+//         } 
+//     }
+// }
 
 
 void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
@@ -44,7 +45,7 @@ void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy
 
         UnityEngine::GameObject *container = CreateScrollView(get_transform());
 
-        floatingScreen = CreateFloatingScreen(UnityEngine::Vector2(1.0f, 1.0f), UnityEngine::Vector3(getModConfig().PositionX.GetValue(), getModConfig().PositionY.GetValue(), getModConfig().PositionZ.GetValue()), UnityEngine::Vector3(getModConfig().RotationX.GetValue(), getModConfig().RotationY.GetValue(), getModConfig().RotationZ.GetValue()), 0.0f, false, false);
+        floatingScreen = CreateFloatingScreen(UnityEngine::Vector2(0.0f, 0.0f), UnityEngine::Vector3(getModConfig().PositionX.GetValue(), getModConfig().PositionY.GetValue(), getModConfig().PositionZ.GetValue()), UnityEngine::Vector3(getModConfig().RotationX.GetValue(), getModConfig().RotationY.GetValue(), getModConfig().RotationZ.GetValue()), 0.0f, false, false);
 
         auto Text = CreateText(floatingScreen->get_transform(), getModConfig().InGameText.GetValue());
 
@@ -74,7 +75,10 @@ void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy
 
         CreateText(container->get_transform(), "");
 
-        auto testConfigButton = CreateUIButton(container->get_transform(), "Test Configuration", "PlayButton", [&]() { StartTestLevel(this); });
+        UnityEngine::UI::Button* testConfigButton = CreateUIButton(container->get_transform(), "Test Configuration", "PlayButton", []() {});
+        testConfigButton->set_interactable(false);
+        AddHoverHint(testConfigButton, "Unavailable on 1.25.1");
+
         auto summonReplicaText = CreateUIButton(container->get_transform(), "Toggle Main Menu Text Replica", [&]() {
             if (floatingScreen->get_active() == true) {
                 floatingScreen->SetActive(false);
@@ -116,7 +120,7 @@ void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy
         //AddConfigValueIncrementVector3(container->get_transform(), getModConfig().TextPosition, 1, 0.5);
 
         // X axis
-        CreateIncrementSetting(container->get_transform(), "Text Position X", 1, 0.5, getModConfig().PositionX.GetValue(), 
+        CreateIncrementSetting(container->get_transform(), "Text Position X", 1, 0.1, getModConfig().PositionX.GetValue(), 
             [=](float value) {
                 getModConfig().PositionX.SetValue(value);
 
@@ -125,7 +129,7 @@ void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy
         );
 
         //Y
-        CreateIncrementSetting(container->get_transform(), "Text Position Y", 1, 0.5, getModConfig().PositionY.GetValue(), 
+        CreateIncrementSetting(container->get_transform(), "Text Position Y", 1, 0.1, getModConfig().PositionY.GetValue(), 
             [=](float value) {
                 getModConfig().PositionY.SetValue(value);
 
@@ -134,7 +138,7 @@ void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy
         );
 
         //Z
-        CreateIncrementSetting(container->get_transform(), "Text Position Z", 1, 0.5, getModConfig().PositionZ.GetValue(), 
+        CreateIncrementSetting(container->get_transform(), "Text Position Z", 1, 0.1, getModConfig().PositionZ.GetValue(), 
             [=](float value) {
                 getModConfig().PositionZ.SetValue(value);
 
@@ -145,7 +149,7 @@ void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy
         //AddConfigValueIncrementVector3(container->get_transform(), getModConfig().TextRotation,  1, 1);
 
         //X
-        CreateIncrementSetting(container->get_transform(), "Text Rotation X", 1, 0.5, getModConfig().RotationX.GetValue(), 
+        CreateIncrementSetting(container->get_transform(), "Text Rotation X", 1, 1, getModConfig().RotationX.GetValue(), 
             [=](float value) {
                 getModConfig().RotationX.SetValue(value);
 
@@ -154,7 +158,7 @@ void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy
         );
 
         //Y
-        CreateIncrementSetting(container->get_transform(), "Text Rotation Y", 1, 0.5, getModConfig().RotationY.GetValue(), 
+        CreateIncrementSetting(container->get_transform(), "Text Rotation Y", 1, 1, getModConfig().RotationY.GetValue(), 
             [=](float value) {
                 getModConfig().RotationY.SetValue(value);
 
@@ -163,7 +167,7 @@ void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy
         );
 
         //Z
-        CreateIncrementSetting(container->get_transform(), "Text Rotation Z", 1, 0.5, getModConfig().RotationZ.GetValue(), 
+        CreateIncrementSetting(container->get_transform(), "Text Rotation Z", 1, 1, getModConfig().RotationZ.GetValue(), 
             [=](float value) {
                 getModConfig().RotationZ.SetValue(value);
 

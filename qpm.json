@@ -4,7 +4,7 @@
   "info": {
     "name": "In-Game Text",
     "id": "InGameText",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "url": null,
     "additionalData": {
       "overrideSoName": "libInGameText.so"
@@ -13,7 +13,7 @@
   "dependencies": [
     {
       "id": "beatsaber-hook",
-      "versionRange": "*",
+      "versionRange": "3.14.0",
       "additionalData": {
         "extraFiles": [
           "src/inline-hook"
@@ -27,22 +27,22 @@
     },
     {
       "id": "codegen",
-      "versionRange": "^0.26.1",
+      "versionRange": "0.28.0",
       "additionalData": {}
     },
     {
       "id": "custom-types",
-      "versionRange": "^0.15.19",
+      "versionRange": "0.15.21",
       "additionalData": {}
     },
     {
       "id": "config-utils",
-      "versionRange": "^0.8.0",
+      "versionRange": "0.8.0",
       "additionalData": {}
     },
     {
       "id": "questui",
-      "versionRange": "^0.16.5",
+      "versionRange": "0.17.4",
       "additionalData": {}
     }
   ],

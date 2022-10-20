@@ -38,7 +38,7 @@ extern "C" void load() {
     getModConfig().Init(modInfo);
 
     QuestUI::Init();
-    QuestUI::Register::RegisterModSettingsViewController<InGameText::TextViewController*>(modInfo, "In-Game Text");
+    QuestUI::Register::RegisterAllModSettingsViewController<InGameText::TextViewController*>(modInfo, "In-Game Text");
 
     getLogger().info("Installing hooks...");
     
