@@ -2,7 +2,7 @@
 
 Add in some text in-game while you're playing a level! Like ImageFactory, but text
 
-Video showcasing the mod here: https://www.youtube.com/watch?v=G5Y778NTksk
+Video showcasing the mod here: https://www.youtube.com/watch?v=ww0STS9nfyc
 
 ## Credits
 
