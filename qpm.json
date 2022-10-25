@@ -4,7 +4,7 @@
   "info": {
     "name": "In-Game Text",
     "id": "InGameText",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "url": null,
     "additionalData": {
       "overrideSoName": "libInGameText.so"
@@ -42,7 +42,7 @@
     },
     {
       "id": "questui",
-      "versionRange": "0.17.4",
+      "versionRange": "0.17.5",
       "additionalData": {}
     }
   ],

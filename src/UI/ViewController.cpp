@@ -23,20 +23,19 @@ using namespace InGameText;
 
 UnityEngine::GameObject *floatingScreen;
 
-// void StartTestLevel(InGameText::TextViewController* self) {
-//     ArrayW<GlobalNamespace::SimpleLevelStarter*> levelStartArray = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::SimpleLevelStarter*>();
-//     for (int i = 0; i < sizeof(levelStartArray); i++)
-//     {
-//         GlobalNamespace::SimpleLevelStarter* start = (GlobalNamespace::SimpleLevelStarter*)levelStartArray->values[i];
-//         if (start->get_gameObject()->get_name()->Contains("PerformanceTestLevelButton"))
-//         {
-//             start->gameplayModifiers->zenMode = true;
-//             start->level->songName = ("In-Game Text Config Test");
-//             start->StartLevel();
-//             return;
-//         } 
-//     }
-// }
+void StartTestLevel(InGameText::TextViewController* self) {
+    ArrayW<GlobalNamespace::SimpleLevelStarter*> levelStartArray = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::SimpleLevelStarter*>();
+    for (int i = 0; i < sizeof(levelStartArray); i++)
+    {
+        GlobalNamespace::SimpleLevelStarter* start = (GlobalNamespace::SimpleLevelStarter*)levelStartArray->values[i];
+        if (start->get_gameObject()->get_name()->Contains("PerformanceTestLevelButton"))
+        {
+            start->level->songName = ("In-Game Text Config Test");
+            start->StartLevel();
+            return;
+        } 
+    }
+}
 
 
 void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
@@ -75,9 +74,7 @@ void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy
 
         CreateText(container->get_transform(), "");
 
-        UnityEngine::UI::Button* testConfigButton = CreateUIButton(container->get_transform(), "Test Configuration", "PlayButton", []() {});
-        testConfigButton->set_interactable(false);
-        AddHoverHint(testConfigButton, "Unavailable on 1.25.1");
+        UnityEngine::UI::Button* testConfigButton = CreateUIButton(container->get_transform(), "Test Configuration", "PlayButton", [&]() { StartTestLevel(this); });
 
         auto summonReplicaText = CreateUIButton(container->get_transform(), "Toggle Main Menu Text Replica", [&]() {
             if (floatingScreen->get_active() == true) {
@@ -86,17 +83,6 @@ void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy
                 floatingScreen->SetActive(true);
             }
         });
-
-        // auto applyChangesButton = CreateUIButton(container->get_transform(), "Apply Changes To Main Menu", [&]() {
-        //     UnityEngine::Object::DestroyImmediate(floatingScreen->get_gameObject());
-
-        //     floatingScreen = CreateFloatingScreen(UnityEngine::Vector2(1.0f, 1.0f), UnityEngine::Vector3(getModConfig().TextPosition.GetValue()), UnityEngine::Vector3(getModConfig().TextRotation.GetValue()), 0.0f, false, false);
-
-        //     auto Text = CreateText(floatingScreen->get_transform(), getModConfig().InGameText.GetValue());
-
-        //     Text->set_fontSize(getModConfig().TextSize.GetValue());
-        //     Text->set_color(getModConfig().TextQolor.GetValue());
-        // });
 
         CreateText(container->get_transform(), "");
         //AddConfigValueColorPicker(container->get_transform(), getModConfig().TextQolor);
