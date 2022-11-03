@@ -7,7 +7,7 @@
 #include "GlobalNamespace/MenuTransitionsHelper.hpp"
 
 #include "UnityEngine/Resources.hpp"
-#include "UnityEngine/Quaternion.hpp"
+#include "UnityEngine/UI/LayoutElement.hpp"
 
 #include "UI/ViewController.hpp"
 
@@ -43,6 +43,54 @@ void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy
     if (firstActivation) {
 
         UnityEngine::GameObject *container = CreateScrollView(get_transform());
+
+        auto screen = CreateCanvas();
+
+        screen->AddComponent<HMUI::Screen *>();
+        auto canvasTransform = reinterpret_cast<UnityEngine::RectTransform *>(screen->get_transform());
+
+        canvasTransform->set_localPosition({0, 1.5, 2.0f});
+
+        auto modalTransform = CreateModal(screen->get_transform(), [screen](auto modal) {
+            Object::Destroy(screen);
+        }, false);
+
+        reinterpret_cast<UnityEngine::RectTransform *>(modalTransform->get_transform())->set_sizeDelta(UnityEngine::Vector2(55.0f, 40.0f));
+
+        auto horizontal = CreateHorizontalLayoutGroup(modalTransform->get_transform());
+        auto vertical = CreateVerticalLayoutGroup(horizontal->get_transform());
+
+        auto layout = vertical;
+
+        auto *layoutelem = layout->get_gameObject()->AddComponent<UnityEngine::UI::LayoutElement*>();
+        layoutelem->set_preferredWidth(55.0f);
+        layoutelem->set_preferredHeight(44.0f);
+
+        layout->set_childAlignment(UnityEngine::TextAnchor::MiddleCenter);
+
+        layout->set_childControlHeight(true);
+        layout->set_childForceExpandHeight(true);
+        layout->set_childControlWidth(true);
+        layout->set_childForceExpandWidth(true);
+
+        TMPro::TextMeshProUGUI *redNoticeText = CreateText(layout->get_transform(), "<size=150%>NOTICE");
+        redNoticeText->set_color(UnityEngine::Color(1, 0, 0, 1));
+
+        TMPro::TextMeshProUGUI *noticeDescription = CreateText(layout->get_transform(), "<size=70%>Over the next few days/weeks, this mod (In-Game Text) is\nhaving a complete UI overhaul. What does this mean?"
+        "<size=50%>\n\n- No future updates will be made until the UI overhaul is done"
+        "<size=50%>\n- No bug fixes will be made until the UI overhaul is done"
+
+        "<size=70%>\n\n...and as for the UI? Well, you'll just have to wait and see."
+        );
+
+        redNoticeText->set_enableWordWrapping(true);
+        redNoticeText->set_alignment(TMPro::TextAlignmentOptions::Center);
+        redNoticeText->set_fontSize(redNoticeText->get_fontSize() * 1.125f);
+
+        redNoticeText->set_enableWordWrapping(true);
+        redNoticeText->set_fontSize(noticeDescription->get_fontSize() * 1.125f);
+
+        modalTransform->Show(true, true, nullptr);
 
         floatingScreen = CreateFloatingScreen(UnityEngine::Vector2(0.0f, 0.0f), UnityEngine::Vector3(getModConfig().PositionX.GetValue(), getModConfig().PositionY.GetValue(), getModConfig().PositionZ.GetValue()), UnityEngine::Vector3(getModConfig().RotationX.GetValue(), getModConfig().RotationY.GetValue(), getModConfig().RotationZ.GetValue()), 0.0f, false, false);
 
