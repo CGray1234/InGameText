@@ -1,7 +1,9 @@
 #include "main.hpp"
 #include "Config.hpp"
 #include "hooks.hpp"
+#include "UI/FlowCoordinator.hpp"
 #include "UI/ViewController.hpp"
+#include "UI/GameplaySetupView.hpp"
 #include "questui/shared/QuestUI.hpp"
 
 DEFINE_CONFIG(ModConfig);
@@ -36,9 +38,9 @@ extern "C" void load() {
     il2cpp_functions::Init();
 
     getModConfig().Init(modInfo);
-
     QuestUI::Init();
-    QuestUI::Register::RegisterAllModSettingsViewController<InGameText::TextViewController*>(modInfo, "In-Game Text");
+    QuestUI::Register::RegisterAllModSettingsFlowCoordinator<InGameText::InGameTextFlowCoordinator*>(modInfo, "In-Game Text");
+    QuestUI::Register::RegisterGameplaySetupMenu<InGameText::gameplaySetupView*>(modInfo, "In-Game Text");
 
     getLogger().info("Installing hooks...");
     

@@ -1,35 +1,30 @@
+#include "UI/ViewController.hpp"
+#include "UI/FlowCoordinator.hpp"
+#include "UI/MiscViewController.hpp"
+#include "UI/PositionViewController.hpp"
+#include "UI/RotationViewController.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
-#include "questui/shared/QuestUI.hpp"
-
+#include "UnityEngine/Resources.hpp"
+#include "questui/shared/CustomTypes/Components/Backgroundable.hpp"
+#include "UnityEngine/RectOffset.hpp"
+#include "HMUI/ViewController_AnimationDirection.hpp"
+#include "HMUI/ViewController_AnimationType.hpp"
+#include "UnityEngine/Application.hpp"
+#include "Config.hpp"
 #include "GlobalNamespace/SimpleLevelStarter.hpp"
 #include "GlobalNamespace/BeatmapLevelSO.hpp"
 #include "GlobalNamespace/GameplayModifiers.hpp"
-#include "GlobalNamespace/MenuTransitionsHelper.hpp"
 
-#include "UnityEngine/Resources.hpp"
-#include "UnityEngine/UI/LayoutElement.hpp"
+DEFINE_TYPE(InGameText, InGameTextViewController);
 
-#include "UI/ViewController.hpp"
-
-#include "Config.hpp"
-
-#include "main.hpp"
-
-DEFINE_TYPE(InGameText, TextViewController);
-
-using namespace QuestUI::BeatSaberUI;
-using namespace UnityEngine;
-using namespace InGameText;
-
-UnityEngine::GameObject *floatingScreen;
-
-void StartTestLevel(InGameText::TextViewController* self) {
+void StartTestLevel(InGameText::InGameTextViewController* self) {
     ArrayW<GlobalNamespace::SimpleLevelStarter*> levelStartArray = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::SimpleLevelStarter*>();
     for (int i = 0; i < sizeof(levelStartArray); i++)
     {
         GlobalNamespace::SimpleLevelStarter* start = (GlobalNamespace::SimpleLevelStarter*)levelStartArray->values[i];
         if (start->get_gameObject()->get_name()->Contains("PerformanceTestLevelButton"))
         {
+            start->gameplayModifiers->zenMode = true;
             start->level->songName = ("In-Game Text Config Test");
             start->StartLevel();
             return;
@@ -37,180 +32,92 @@ void StartTestLevel(InGameText::TextViewController* self) {
     }
 }
 
-
-void TextViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
+void InGameText::InGameTextViewController::DidActivate(
+    bool firstActivation,
+    bool addedToHierarchy,
+    bool screenSystemEnabling
+) {
+    using namespace UnityEngine;
+    using namespace QuestUI::BeatSaberUI;
+    using namespace UnityEngine::UI;
 
     if (firstActivation) {
+        VerticalLayoutGroup* verticalLayoutGroup = CreateVerticalLayoutGroup(get_transform());
 
-        UnityEngine::GameObject *container = CreateScrollView(get_transform());
+        GameObject* scrollView = CreateScrollView(verticalLayoutGroup->get_transform());
+        LayoutElement* scrollViewLayoutElement = scrollView->GetComponentInParent<LayoutElement*>();
+        scrollViewLayoutElement->set_preferredWidth(120);
+        scrollViewLayoutElement->set_preferredHeight(65);
 
-        auto screen = CreateCanvas();
-
-        screen->AddComponent<HMUI::Screen *>();
-        auto canvasTransform = reinterpret_cast<UnityEngine::RectTransform *>(screen->get_transform());
-
-        canvasTransform->set_localPosition({0, 1.5, 2.0f});
-
-        auto modalTransform = CreateModal(screen->get_transform(), [screen](auto modal) {
-            Object::Destroy(screen);
-        }, false);
-
-        reinterpret_cast<UnityEngine::RectTransform *>(modalTransform->get_transform())->set_sizeDelta(UnityEngine::Vector2(55.0f, 40.0f));
-
-        auto horizontal = CreateHorizontalLayoutGroup(modalTransform->get_transform());
-        auto vertical = CreateVerticalLayoutGroup(horizontal->get_transform());
-
-        auto layout = vertical;
-
-        auto *layoutelem = layout->get_gameObject()->AddComponent<UnityEngine::UI::LayoutElement*>();
-        layoutelem->set_preferredWidth(55.0f);
-        layoutelem->set_preferredHeight(44.0f);
-
-        layout->set_childAlignment(UnityEngine::TextAnchor::MiddleCenter);
-
-        layout->set_childControlHeight(true);
-        layout->set_childForceExpandHeight(true);
-        layout->set_childControlWidth(true);
-        layout->set_childForceExpandWidth(true);
-
-        TMPro::TextMeshProUGUI *redNoticeText = CreateText(layout->get_transform(), "<size=150%>NOTICE");
-        redNoticeText->set_color(UnityEngine::Color(1, 0, 0, 1));
-
-        TMPro::TextMeshProUGUI *noticeDescription = CreateText(layout->get_transform(), "<size=70%>Over the next few days/weeks, this mod (In-Game Text) is\nhaving a complete UI overhaul. What does this mean?"
-        "<size=50%>\n\n- No future updates will be made until the UI overhaul is done"
-        "<size=50%>\n- No bug fixes will be made until the UI overhaul is done"
-
-        "<size=70%>\n\n...and as for the UI? Well, you'll just have to wait and see."
-        );
-
-        redNoticeText->set_enableWordWrapping(true);
-        redNoticeText->set_alignment(TMPro::TextAlignmentOptions::Center);
-        redNoticeText->set_fontSize(redNoticeText->get_fontSize() * 1.125f);
-
-        redNoticeText->set_enableWordWrapping(true);
-        redNoticeText->set_fontSize(noticeDescription->get_fontSize() * 1.125f);
-
-        modalTransform->Show(true, true, nullptr);
-
-        floatingScreen = CreateFloatingScreen(UnityEngine::Vector2(0.0f, 0.0f), UnityEngine::Vector3(getModConfig().PositionX.GetValue(), getModConfig().PositionY.GetValue(), getModConfig().PositionZ.GetValue()), UnityEngine::Vector3(getModConfig().RotationX.GetValue(), getModConfig().RotationY.GetValue(), getModConfig().RotationZ.GetValue()), 0.0f, false, false);
-
-        auto Text = CreateText(floatingScreen->get_transform(), getModConfig().InGameText.GetValue());
-
-        Text->set_fontSize(getModConfig().TextSize.GetValue());
-        Text->set_color(getModConfig().TextQolor.GetValue());
-
-        //AddConfigValueToggle(container->get_transform(), getModConfig().InGameTextEnabled)->get_gameObject();
-
-        CreateToggle(container->get_transform(), "Enable In-Game Text", getModConfig().InGameTextEnabled.GetValue(),
-            [=](bool value) {
+        auto enableButton = CreateToggle(scrollView->get_transform(), "Enable InGameText", getModConfig().InGameTextEnabled.GetValue(),
+            [](bool value) {
                 getModConfig().InGameTextEnabled.SetValue(value);
-
-                floatingScreen->SetActive(value);
             }
         );
 
-        CreateText(container->get_transform(), "");
+        positionButton = CreateViewControllerButton(scrollView->get_transform(), "Position Settings", "Change the position of your text!", CreateViewController<InGameText::PositionViewController*>());
+        rotationButton = CreateViewControllerButton(scrollView->get_transform(), "Rotation Settings", "Change the angle/rotation of your text!", CreateViewController<InGameText::RotationViewController*>());
+        miscButton = CreateViewControllerButton(scrollView->get_transform(), "Miscellaneous Settings", "Change other text settings like color, size, and what you want it to say!", CreateViewController<InGameText::MiscViewController*>());
 
-        //AddConfigValueStringSetting(container->get_transform(), getModConfig().InGameText)->get_gameObject();
-        CreateStringSetting(container->get_transform(), "In-Game Text", getModConfig().InGameText.GetValue(), 
-            [=](std::string value) {
-                getModConfig().InGameText.SetValue(value);
-
-                Text->SetText(value);
+        auto testButton = CreateUIButton(scrollView->get_transform(), "Test Configuration", "PlayButton",
+            [&]() {
+                StartTestLevel(this);
             }
         );
 
-        CreateText(container->get_transform(), "");
+        HorizontalLayoutGroup* horizontalLayoutGroup = CreateHorizontalLayoutGroup(verticalLayoutGroup->get_transform());
+        horizontalLayoutGroup->set_padding(RectOffset::New_ctor(8, 0, -5, 5));
 
-        UnityEngine::UI::Button* testConfigButton = CreateUIButton(container->get_transform(), "Test Configuration", "PlayButton", [&]() { StartTestLevel(this); });
-
-        auto summonReplicaText = CreateUIButton(container->get_transform(), "Toggle Main Menu Text Replica", [&]() {
-            if (floatingScreen->get_active() == true) {
-                floatingScreen->SetActive(false);
-            } else {
-                floatingScreen->SetActive(true);
-            }
-        });
-
-        CreateText(container->get_transform(), "");
-        //AddConfigValueColorPicker(container->get_transform(), getModConfig().TextQolor);
-        CreateColorPicker(container->get_transform(), "Text Color", getModConfig().TextQolor.GetValue(), 
-            [=](UnityEngine::Color value) {
-                getModConfig().TextQolor.SetValue(value);
-
-                Text->set_color(value);
+        CreateText(horizontalLayoutGroup->get_transform(), "Welcome to the new InGameText UI!", Vector2::get_zero(), Vector2(4, 4));
+        Button* githubButton = CreateUIButton(horizontalLayoutGroup->get_transform(), "Open GitHub Page",
+            []() {
+                Application::OpenURL("https://github.com/CGray1234/InGameText");
             }
         );
-        CreateText(container->get_transform(), "");
-        //AddConfigValueIncrementFloat(container->get_transform(), getModConfig().TextSize, 1, 0.5, 0, 10000);
-        CreateIncrementSetting(container->get_transform(), "Text Size", 1, 0.5, getModConfig().TextSize.GetValue(), 
-            [=](float value) {
-                getModConfig().TextSize.SetValue(value);
-
-                Text->set_fontSize(value);
-            }
-        );
-        CreateText(container->get_transform(), "");
-        //AddConfigValueIncrementVector3(container->get_transform(), getModConfig().TextPosition, 1, 0.5);
-
-        // X axis
-        CreateIncrementSetting(container->get_transform(), "Text Position X", 1, 0.1, getModConfig().PositionX.GetValue(), 
-            [=](float value) {
-                getModConfig().PositionX.SetValue(value);
-
-                floatingScreen->get_transform()->set_position(UnityEngine::Vector3(getModConfig().PositionX.GetValue(), getModConfig().PositionY.GetValue(), getModConfig().PositionZ.GetValue()));
-            }
-        );
-
-        //Y
-        CreateIncrementSetting(container->get_transform(), "Text Position Y", 1, 0.1, getModConfig().PositionY.GetValue(), 
-            [=](float value) {
-                getModConfig().PositionY.SetValue(value);
-
-                floatingScreen->get_transform()->set_position(UnityEngine::Vector3(getModConfig().PositionX.GetValue(), getModConfig().PositionY.GetValue(), getModConfig().PositionZ.GetValue()));
-            }
-        );
-
-        //Z
-        CreateIncrementSetting(container->get_transform(), "Text Position Z", 1, 0.1, getModConfig().PositionZ.GetValue(), 
-            [=](float value) {
-                getModConfig().PositionZ.SetValue(value);
-
-                floatingScreen->get_transform()->set_position(UnityEngine::Vector3(getModConfig().PositionX.GetValue(), getModConfig().PositionY.GetValue(), getModConfig().PositionZ.GetValue()));
-            }
-        );
-        CreateText(container->get_transform(), "");
-        //AddConfigValueIncrementVector3(container->get_transform(), getModConfig().TextRotation,  1, 1);
-
-        //X
-        CreateIncrementSetting(container->get_transform(), "Text Rotation X", 1, 1, getModConfig().RotationX.GetValue(), 
-            [=](float value) {
-                getModConfig().RotationX.SetValue(value);
-
-                Text->get_transform()->set_eulerAngles(UnityEngine::Vector3(getModConfig().RotationX.GetValue(), getModConfig().RotationY.GetValue(), getModConfig().RotationZ.GetValue()));
-            }
-        );
-
-        //Y
-        CreateIncrementSetting(container->get_transform(), "Text Rotation Y", 1, 1, getModConfig().RotationY.GetValue(), 
-            [=](float value) {
-                getModConfig().RotationY.SetValue(value);
-
-                Text->get_transform()->set_eulerAngles(UnityEngine::Vector3(getModConfig().RotationX.GetValue(), getModConfig().RotationY.GetValue(), getModConfig().RotationZ.GetValue()));
-            }
-        );
-
-        //Z
-        CreateIncrementSetting(container->get_transform(), "Text Rotation Z", 1, 1, getModConfig().RotationZ.GetValue(), 
-            [=](float value) {
-                getModConfig().RotationZ.SetValue(value);
-
-                Text->get_transform()->set_eulerAngles(UnityEngine::Vector3(getModConfig().RotationX.GetValue(), getModConfig().RotationY.GetValue(), getModConfig().RotationZ.GetValue()));
-            }
-        );
+        SetButtonTextSize(githubButton, 3);
     }
 }
 
-void TextViewController::DidDeactivate(bool removedFromHierarchy, bool screenSystemDisabling) {
-    floatingScreen->SetActive(false);
+UnityEngine::UI::Button* InGameText::InGameTextViewController::CreateViewControllerButton(
+    UnityEngine::Transform* parent,
+    std::string title,
+    std::string description,
+    HMUI::ViewController* viewController
+) {
+    using namespace HMUI;
+    using namespace UnityEngine;
+    using namespace UnityEngine::UI;
+
+    HorizontalLayoutGroup* horizontalLayoutGroup = QuestUI::BeatSaberUI::CreateHorizontalLayoutGroup(parent);
+    QuestUI::Backgroundable* horizontalLayoutGroupBackgroundable = horizontalLayoutGroup->GetComponent<QuestUI::Backgroundable*>();
+    horizontalLayoutGroupBackgroundable->ApplyBackground("panel-top");
+    horizontalLayoutGroupBackgroundable->GetComponentInChildren<ImageView*>()->skew = .18f;
+    LayoutElement* horizontalLayoutGroupLayoutElement = horizontalLayoutGroup->GetComponent<LayoutElement*>();
+    horizontalLayoutGroupLayoutElement->set_preferredWidth(100);
+    horizontalLayoutGroupLayoutElement->set_preferredHeight(15);
+
+    VerticalLayoutGroup* verticalLayoutGroup = QuestUI::BeatSaberUI::CreateVerticalLayoutGroup(horizontalLayoutGroup->get_transform());
+    verticalLayoutGroup->set_spacing(-5);
+    verticalLayoutGroup->set_padding(RectOffset::New_ctor(0, 0, -1, 0));
+    LayoutElement* verticalLayoutGroupLayoutElement = verticalLayoutGroup->GetComponent<LayoutElement*>();
+    verticalLayoutGroupLayoutElement->set_preferredWidth(65);
+
+    QuestUI::BeatSaberUI::CreateText(verticalLayoutGroup->get_transform(), description, true, Vector2::get_zero(), Vector2(3, 3))->set_alignment(TMPro::TextAlignmentOptions::Center);
+
+    Button* openButton = QuestUI::BeatSaberUI::CreateUIButton(verticalLayoutGroup->get_transform(), title, "PlayButton",
+        [this, title, viewController]() {
+            flowCoordinator->SetTitle(title, ViewController::AnimationType::In);
+            flowCoordinator->ReplaceTopViewController(viewController, flowCoordinator, flowCoordinator, nullptr, ViewController::AnimationType::In, ViewController::AnimationDirection::Horizontal);
+
+            reinterpret_cast<InGameText::InGameTextFlowCoordinator*>(flowCoordinator)->currentViewController = viewController;
+        }
+    );
+    QuestUI::BeatSaberUI::SetButtonTextSize(openButton, 5);
+
+    Object::Destroy(openButton->get_transform()->Find("Content")->GetComponent<LayoutElement*>());
+
+    ContentSizeFitter* contentSizeFitter = openButton->get_gameObject()->AddComponent<ContentSizeFitter*>();
+    contentSizeFitter->set_verticalFit(ContentSizeFitter::FitMode::PreferredSize);
+
+    return openButton;
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "config-utils/shared/config-utils.hpp"
+#include "UnityEngine/Color.hpp"
 
 DECLARE_CONFIG(ModConfig,
 
