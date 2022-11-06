@@ -24,6 +24,8 @@ MAKE_AUTO_HOOK_MATCH(InGameText, &GlobalNamespace::GameplayCoreInstaller::Instal
         auto TextModel = CreateText(screen->get_transform(), getModConfig().InGameText.GetValue());
 
         screen->SetActive(true);
+
+        TextModel->set_alignment(TMPro::TextAlignmentOptions::Center);
         
         TextModel->set_fontSize(getModConfig().TextSize.GetValue());
 
