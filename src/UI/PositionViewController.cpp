@@ -4,8 +4,6 @@
 #include "questui/shared/BeatSaberUI.hpp"
 #include "questui/shared/QuestUI.hpp"
 
-#include "Images/PositionSettingsIcon.hpp"
-
 #include "GlobalNamespace/SimpleLevelStarter.hpp"
 #include "GlobalNamespace/BeatmapLevelSO.hpp"
 #include "GlobalNamespace/GameplayModifiers.hpp"
@@ -38,10 +36,6 @@ void InGameText::PositionViewController::DidActivate(
 
     if (firstActivation) {
         GameObject* container = CreateScrollableSettingsContainer(get_transform());
-
-        UnityEngine::Sprite* PositionImage = Base64ToSprite(PositionIcon);
-
-        CreateImage(container->get_transform(), PositionImage, Vector2::get_zero(), Vector2(75.0f, 75.0f));
 
         QuestUI::BeatSaberUI::CreateIncrementSetting(container->get_transform(), "Text Position X", 1, 0.1, getModConfig().PositionX.GetValue(), 
             [=](float value) {

@@ -20,6 +20,7 @@ void InGameText::InGameTextFlowCoordinator::DidActivate(bool firstActivation, bo
         currentViewController = nullptr;
 
         ProvideInitialViewControllers(inGameTextViewController, nullptr, nullptr, nullptr, nullptr);
+        ProvideInitialViewControllers(nullptr, InGameText::gameplaySetupView, nullptr, nullptr, nullptr);
     }
 }
 

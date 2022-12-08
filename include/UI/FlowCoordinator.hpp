@@ -5,6 +5,7 @@
 #include "questui/shared/BeatSaberUI.hpp"
 #include "questui/shared/QuestUI.hpp"
 #include "ViewController.hpp"
+#include "UI/GameplaySetupView.hpp"
 #include "main.hpp"
 
 DECLARE_CLASS_CODEGEN(InGameText, InGameTextFlowCoordinator, HMUI::FlowCoordinator,
