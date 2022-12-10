@@ -6,8 +6,6 @@
 #include "questui/shared/BeatSaberUI.hpp"
 #include "questui/shared/QuestUI.hpp"
 
-#include "Images/MiscSettingsIcon.hpp"
-
 #include "GlobalNamespace/SimpleLevelStarter.hpp"
 #include "GlobalNamespace/BeatmapLevelSO.hpp"
 #include "GlobalNamespace/GameplayModifiers.hpp"
@@ -40,10 +38,6 @@ void InGameText::MiscViewController::DidActivate(
 
     if (firstActivation) {
         GameObject* container = CreateScrollableSettingsContainer(get_transform());
-
-        UnityEngine::Sprite* MiscImage = Base64ToSprite(MiscSettingsIcon);
-
-        CreateImage(container->get_transform(), MiscImage, Vector2::get_zero(), Vector2(75.0f, 75.0f));
 
         QuestUI::BeatSaberUI::CreateStringSetting(container->get_transform(), "In-Game Text", getModConfig().InGameText.GetValue(),
             [=](std::string value) {

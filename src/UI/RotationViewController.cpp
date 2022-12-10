@@ -3,8 +3,6 @@
 
 #include "UnityEngine/Sprite.hpp"
 
-#include "Images/RotationSettingsIcon.hpp"
-
 #include "questui/shared/BeatSaberUI.hpp"
 #include "questui/shared/QuestUI.hpp"
 
@@ -40,10 +38,6 @@ void InGameText::RotationViewController::DidActivate(
 
     if (firstActivation) {
         GameObject* container = CreateScrollableSettingsContainer(get_transform());
-
-        UnityEngine::Sprite* RotationImage = Base64ToSprite(RotationIcon);
-
-        CreateImage(container->get_transform(), RotationImage, Vector2::get_zero(), Vector2(75.0f, 75.0f));
 
         QuestUI::BeatSaberUI::CreateIncrementSetting(container->get_transform(), "Text Rotation X", 1, 1, getModConfig().RotationX.GetValue(), 
             [=](float value) {
