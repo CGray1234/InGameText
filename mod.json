@@ -1,19 +1,20 @@
 {
-	"_QPVersion": "0.1.1",
-	"name": "In-Game Text",
-	"id": "InGameText",
+	"_QPVersion": "1.1.0",
+	"name": "${mod_name}",
+	"id": "${mod_id}",
+	"modloader": "Scotland2",
 	"author": "CGray1234",
-	"version": "1.0.0",
+	"version": "${version}",
 	"packageId": "com.beatgames.beatsaber",
-	"packageVersion": "1.27.0_3631150051",
-	"description": "Add in some text in-game while you're playing a level! Like ImageFactory, but text",
-	"coverImage": "cover.png",
+	"packageVersion": "1.35.0_8016709773",
+	"description": "Add fully-customizable text into your game!",
 	"dependencies": [],
-	"modFiles": [
-		"libInGameText.so"
+	"coverImage": "cover.jpg",
+	"modFiles": [],
+	"lateModFiles": [
+	  "${binary}"
 	],
-	"libraryFiles": [
-		"libbeatsaber-hook_3_14_0.so"
-	],
-	"fileCopies": []
-}
+	"libraryFiles": [],
+	"fileCopies": [],
+	"copyExtensions": []
+  }
