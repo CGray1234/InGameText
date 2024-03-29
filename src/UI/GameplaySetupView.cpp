@@ -167,17 +167,17 @@ void InGameText::gameplaySetupView::DidActivate(bool firstActivation) {
         MiscLayout->get_gameObject()->SetActive(true);
         horizontalLayoutGroup->get_gameObject()->SetActive(false);
     });
-    UIUtils::SwapButtonSprites(MiscButton, BSML::Lite::ArrayToSprite(IncludedAssets::MiscGradient_png), BSML::Lite::ArrayToSprite(IncludedAssets::MiscGradientSelected_png));
+    UIUtils::SwapButtonSprites(MiscButton, BSML::Lite::Base64ToSprite(miscIcon), BSML::Lite::Base64ToSprite(miscSelected));
 
     PositionButton = CreateUIButton(horizontalLayoutGroup->get_transform(), "", "SettingsButton", [=]() {
         PositionLayout->get_gameObject()->SetActive(true);
         horizontalLayoutGroup->get_gameObject()->SetActive(false);
     });
-    UIUtils::SwapButtonSprites(PositionButton, BSML::Lite::ArrayToSprite(IncludedAssets::PosGradient_png), BSML::Lite::ArrayToSprite(IncludedAssets::PosGradientSelected_png));
+    UIUtils::SwapButtonSprites(PositionButton, BSML::Lite::Base64ToSprite(posIcon), BSML::Lite::Base64ToSprite(posSelected));
     
     RotationButton = CreateUIButton(horizontalLayoutGroup->get_transform(), "", "SettingsButton", [=]() {
         RotationLayout->get_gameObject()->SetActive(true);
         horizontalLayoutGroup->get_gameObject()->SetActive(false);
     });
-    UIUtils::SwapButtonSprites(RotationButton, BSML::Lite::ArrayToSprite(IncludedAssets::RotGradient_png), BSML::Lite::ArrayToSprite(IncludedAssets::RotGradientSelected_png));
+    UIUtils::SwapButtonSprites(RotationButton, BSML::Lite::Base64ToSprite(rotIcon), BSML::Lite::Base64ToSprite(rotSelected));
 }
