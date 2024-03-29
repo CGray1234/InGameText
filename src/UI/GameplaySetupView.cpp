@@ -1,5 +1,4 @@
-#include "questui/shared/BeatSaberUI.hpp"
-#include "questui/shared/QuestUI.hpp"
+#include "bsml/shared/Helpers/creation.hpp"
 #include "Config.hpp"
 #include "UI/GameplaySetupView.hpp"
 #include "UI/ViewController.hpp"
@@ -23,11 +22,19 @@
 #include "GlobalNamespace/BeatmapLevelSO.hpp"
 #include "GlobalNamespace/GameplayModifiers.hpp"
 
+#include "bsml/shared/BSML-Lite/Creation/Image.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Settings.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Misc.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Layout.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Buttons.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Text.hpp"
+
 DEFINE_TYPE(InGameText, gameplaySetupView);
 
 using namespace UnityEngine::UI;
 using namespace UnityEngine;
-using namespace QuestUI::BeatSaberUI;
+using namespace BSML;
+using namespace BSML::Lite;
 
 void StartTestLevel(InGameText::gameplaySetupView* self) {
     ArrayW<GlobalNamespace::SimpleLevelStarter*> levelStartArray = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::SimpleLevelStarter*>();
@@ -81,10 +88,10 @@ void InGameText::gameplaySetupView::DidActivate(bool firstActivation) {
             getModConfig().TextSize.SetValue(value);
         }
     );
-    CreateUIButton(MiscLayout->get_transform(), "Test Configuration", "PlayButton", [&]() {
+    BSML::Lite::CreateUIButton(MiscLayout->get_transform(), "Test Configuration", "PlayButton", [&]() {
         StartTestLevel(this);
     });
-    miscBackButton = CreateUIButton(MiscLayout->get_transform(), "BACK", [=](){
+    miscBackButton = BSML::Lite::CreateUIButton(MiscLayout->get_transform(), "BACK", [=](){
         MiscLayout->get_gameObject()->SetActive(false);
         horizontalLayoutGroup->get_gameObject()->SetActive(true);
     });
@@ -160,17 +167,17 @@ void InGameText::gameplaySetupView::DidActivate(bool firstActivation) {
         MiscLayout->get_gameObject()->SetActive(true);
         horizontalLayoutGroup->get_gameObject()->SetActive(false);
     });
-    UIUtils::SwapButtonSprites(MiscButton, QuestUI::BeatSaberUI::ArrayToSprite(IncludedAssets::MiscGradient_png), QuestUI::BeatSaberUI::ArrayToSprite(IncludedAssets::MiscGradientSelected_png));
+    UIUtils::SwapButtonSprites(MiscButton, BSML::Lite::ArrayToSprite(IncludedAssets::MiscGradient_png), BSML::Lite::ArrayToSprite(IncludedAssets::MiscGradientSelected_png));
 
     PositionButton = CreateUIButton(horizontalLayoutGroup->get_transform(), "", "SettingsButton", [=]() {
         PositionLayout->get_gameObject()->SetActive(true);
         horizontalLayoutGroup->get_gameObject()->SetActive(false);
     });
-    UIUtils::SwapButtonSprites(PositionButton, QuestUI::BeatSaberUI::ArrayToSprite(IncludedAssets::PosGradient_png), QuestUI::BeatSaberUI::ArrayToSprite(IncludedAssets::PosGradientSelected_png));
+    UIUtils::SwapButtonSprites(PositionButton, BSML::Lite::ArrayToSprite(IncludedAssets::PosGradient_png), BSML::Lite::ArrayToSprite(IncludedAssets::PosGradientSelected_png));
     
     RotationButton = CreateUIButton(horizontalLayoutGroup->get_transform(), "", "SettingsButton", [=]() {
         RotationLayout->get_gameObject()->SetActive(true);
         horizontalLayoutGroup->get_gameObject()->SetActive(false);
     });
-    UIUtils::SwapButtonSprites(RotationButton, QuestUI::BeatSaberUI::ArrayToSprite(IncludedAssets::RotGradient_png), QuestUI::BeatSaberUI::ArrayToSprite(IncludedAssets::RotGradientSelected_png));
+    UIUtils::SwapButtonSprites(RotationButton, BSML::Lite::ArrayToSprite(IncludedAssets::RotGradient_png), BSML::Lite::ArrayToSprite(IncludedAssets::RotGradientSelected_png));
 }

@@ -3,9 +3,8 @@
 #include "UI/MiscViewController.hpp"
 #include "UI/PositionViewController.hpp"
 #include "UI/RotationViewController.hpp"
-#include "questui/shared/BeatSaberUI.hpp"
 #include "UnityEngine/Resources.hpp"
-#include "questui/shared/CustomTypes/Components/Backgroundable.hpp"
+#include "bsml/shared/BSML/Components/Backgroundable.hpp"
 #include "UnityEngine/RectOffset.hpp"
 #include "HMUI/ViewController_AnimationDirection.hpp"
 #include "HMUI/ViewController_AnimationType.hpp"
@@ -14,6 +13,13 @@
 #include "GlobalNamespace/SimpleLevelStarter.hpp"
 #include "GlobalNamespace/BeatmapLevelSO.hpp"
 #include "GlobalNamespace/GameplayModifiers.hpp"
+
+#include "bsml/shared/BSML-Lite/Creation/Image.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Settings.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Misc.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Layout.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Buttons.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Text.hpp"
 
 DEFINE_TYPE(InGameText, InGameTextViewController);
 
@@ -38,7 +44,8 @@ void InGameText::InGameTextViewController::DidActivate(
     bool screenSystemEnabling
 ) {
     using namespace UnityEngine;
-    using namespace QuestUI::BeatSaberUI;
+    using namespace BSML;
+    using namespace BSML::Lite;
     using namespace UnityEngine::UI;
 
     if (firstActivation) {
@@ -89,7 +96,7 @@ UnityEngine::UI::Button* InGameText::InGameTextViewController::CreateViewControl
     using namespace UnityEngine::UI;
 
     HorizontalLayoutGroup* horizontalLayoutGroup = QuestUI::BeatSaberUI::CreateHorizontalLayoutGroup(parent);
-    QuestUI::Backgroundable* horizontalLayoutGroupBackgroundable = horizontalLayoutGroup->GetComponent<QuestUI::Backgroundable*>();
+    BSML::Backgroundable* horizontalLayoutGroupBackgroundable = horizontalLayoutGroup->GetComponent<QuestUI::Backgroundable*>();
     horizontalLayoutGroupBackgroundable->ApplyBackground("panel-top");
     horizontalLayoutGroupBackgroundable->GetComponentInChildren<ImageView*>()->skew = .18f;
     LayoutElement* horizontalLayoutGroupLayoutElement = horizontalLayoutGroup->GetComponent<LayoutElement*>();
@@ -102,9 +109,9 @@ UnityEngine::UI::Button* InGameText::InGameTextViewController::CreateViewControl
     LayoutElement* verticalLayoutGroupLayoutElement = verticalLayoutGroup->GetComponent<LayoutElement*>();
     verticalLayoutGroupLayoutElement->set_preferredWidth(65);
 
-    QuestUI::BeatSaberUI::CreateText(verticalLayoutGroup->get_transform(), description, true, Vector2::get_zero(), Vector2(3, 3))->set_alignment(TMPro::TextAlignmentOptions::Center);
+    BSML::Lite::CreateText(verticalLayoutGroup->get_transform(), description, true, Vector2::get_zero(), Vector2(3, 3))->set_alignment(TMPro::TextAlignmentOptions::Center);
 
-    Button* openButton = QuestUI::BeatSaberUI::CreateUIButton(verticalLayoutGroup->get_transform(), title, "PlayButton",
+    Button* openButton = BSML::Lite::CreateUIButton(verticalLayoutGroup->get_transform(), title, "PlayButton",
         [this, title, viewController]() {
             flowCoordinator->SetTitle(title, ViewController::AnimationType::In);
             flowCoordinator->ReplaceTopViewController(viewController, flowCoordinator, flowCoordinator, nullptr, ViewController::AnimationType::In, ViewController::AnimationDirection::Horizontal);
@@ -112,7 +119,7 @@ UnityEngine::UI::Button* InGameText::InGameTextViewController::CreateViewControl
             reinterpret_cast<InGameText::InGameTextFlowCoordinator*>(flowCoordinator)->currentViewController = viewController;
         }
     );
-    QuestUI::BeatSaberUI::SetButtonTextSize(openButton, 5);
+    BSML::Lite::SetButtonTextSize(openButton, 5);
 
     Object::Destroy(openButton->get_transform()->Find("Content")->GetComponent<LayoutElement*>());
 

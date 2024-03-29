@@ -2,8 +2,6 @@
 
 #include "custom-types/shared/macros.hpp"
 #include "custom-types/shared/register.hpp"
-#include "questui/shared/BeatSaberUI.hpp"
-#include "questui/shared/QuestUI.hpp"
 
 DECLARE_CLASS_CODEGEN(InGameText, InGameTextViewController, HMUI::ViewController,
     DECLARE_INSTANCE_FIELD(HMUI::FlowCoordinator*, flowCoordinator);

@@ -24,22 +24,4 @@ DECLARE_CONFIG(ModConfig,
 
     CONFIG_VALUE(TextSize, float, "In-Game Text Size", 5);
 
-    CONFIG_INIT_FUNCTION(
-
-        CONFIG_INIT_VALUE(InGameText);
-        CONFIG_INIT_VALUE(InGameTextEnabled);
-
-        CONFIG_INIT_VALUE(TextQolor);
-
-        //CONFIG_INIT_VALUE(TextPosition);
-        CONFIG_INIT_VALUE(PositionX);
-        CONFIG_INIT_VALUE(PositionY);
-        CONFIG_INIT_VALUE(PositionZ);
-        //CONFIG_INIT_VALUE(TextRotation);
-        CONFIG_INIT_VALUE(RotationX);
-        CONFIG_INIT_VALUE(RotationY);
-        CONFIG_INIT_VALUE(RotationZ);
-        
-        CONFIG_INIT_VALUE(TextSize);
-    )
 )

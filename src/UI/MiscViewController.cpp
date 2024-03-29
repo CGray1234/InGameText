@@ -3,8 +3,12 @@
 
 #include "TMPro/TextMeshProUGUI.hpp"
 
-#include "questui/shared/BeatSaberUI.hpp"
-#include "questui/shared/QuestUI.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Image.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Settings.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Misc.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Layout.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Buttons.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Text.hpp"
 
 #include "GlobalNamespace/SimpleLevelStarter.hpp"
 #include "GlobalNamespace/BeatmapLevelSO.hpp"
@@ -33,33 +37,34 @@ void InGameText::MiscViewController::DidActivate(
     bool screenSystemEnabling
 ) {
     using namespace UnityEngine;
-    using namespace QuestUI::BeatSaberUI;
+    using namespace BSML;
+    using namespace BSML::Lite;
     using namespace UnityEngine::UI;
 
     if (firstActivation) {
         GameObject* container = CreateScrollableSettingsContainer(get_transform());
 
-        QuestUI::BeatSaberUI::CreateStringSetting(container->get_transform(), "In-Game Text", getModConfig().InGameText.GetValue(),
+        BSML::Lite::CreateStringSetting(container->get_transform(), "In-Game Text", getModConfig().InGameText.GetValue(),
             [=](std::string value) {
                 getModConfig().InGameText.SetValue(value);
             }
         );
 
-        QuestUI::BeatSaberUI::CreateColorPicker(container->get_transform(), "Text Color", getModConfig().TextQolor.GetValue(),
+        BSML::CreateColorPicker(container->get_transform(), "Text Color", getModConfig().TextQolor.GetValue(),
             [=](UnityEngine::Color value) {
                 getModConfig().TextQolor.SetValue(value);
             }
         );
 
-        QuestUI::BeatSaberUI::CreateIncrementSetting(container->get_transform(), "Text Size", 1, 0.5, getModConfig().TextSize.GetValue(),
+        BSML::CreateIncrementSetting(container->get_transform(), "Text Size", 1, 0.5, getModConfig().TextSize.GetValue(),
             [=](float value) {
                 getModConfig().TextSize.SetValue(value);
             }
         );
 
-        QuestUI::BeatSaberUI::CreateText(container->get_transform(), "");
+        BSML::Lite::CreateText(container->get_transform(), "");
 
-        auto testButton = QuestUI::BeatSaberUI::CreateUIButton(container->get_transform(), "Test Configuration", "PlayButton",
+        auto testButton = BSML::Lite::CreateUIButton(container->get_transform(), "Test Configuration", "PlayButton",
             [&]() {
                 StartTestLevel(this);
             }

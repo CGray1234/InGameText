@@ -4,7 +4,7 @@
 #include "UI/FlowCoordinator.hpp"
 #include "UI/ViewController.hpp"
 #include "UI/GameplaySetupView.hpp"
-#include "questui/shared/QuestUI.hpp"
+#include "bsml/shared/BSML.hpp"
 
 DEFINE_CONFIG(ModConfig);
 
@@ -38,9 +38,9 @@ extern "C" void load() {
     il2cpp_functions::Init();
 
     getModConfig().Init(modInfo);
-    QuestUI::Init();
-    QuestUI::Register::RegisterAllModSettingsFlowCoordinator<InGameText::InGameTextFlowCoordinator*>(modInfo, "In-Game Text");
-    QuestUI::Register::RegisterGameplaySetupMenu<InGameText::gameplaySetupView*>(modInfo, "In-Game Text");
+    BSML::Init();
+    BSML::Register::RegisterSettingsMenu<InGameText::InGameTextFlowCoordinator*>("In-Game Text");
+    BSML::Register::RegisterGameplaySetupTab<InGameText::gameplaySetupView*>("In-Game Text");
 
     getLogger().info("Installing hooks...");
     

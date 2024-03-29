@@ -3,8 +3,12 @@
 
 #include "UnityEngine/Sprite.hpp"
 
-#include "questui/shared/BeatSaberUI.hpp"
-#include "questui/shared/QuestUI.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Image.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Settings.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Misc.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Layout.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Buttons.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Text.hpp"
 
 #include "GlobalNamespace/SimpleLevelStarter.hpp"
 #include "GlobalNamespace/BeatmapLevelSO.hpp"
@@ -33,33 +37,34 @@ void InGameText::RotationViewController::DidActivate(
     bool screenSystemEnabling
 ) {
     using namespace UnityEngine;
-    using namespace QuestUI::BeatSaberUI;
+    using namespace BSML;
+    using namespace BSML::Lite;
     using namespace UnityEngine::UI;
 
     if (firstActivation) {
         GameObject* container = CreateScrollableSettingsContainer(get_transform());
 
-        QuestUI::BeatSaberUI::CreateIncrementSetting(container->get_transform(), "Text Rotation X", 1, 1, getModConfig().RotationX.GetValue(), 
+        BSML::CreateIncrementSetting(container->get_transform(), "Text Rotation X", 1, 1, getModConfig().RotationX.GetValue(), 
             [=](float value) {
                 getModConfig().RotationX.SetValue(value);
             }
         );
 
-        QuestUI::BeatSaberUI::CreateIncrementSetting(container->get_transform(), "Text Rotation Y", 1, 1, getModConfig().RotationY.GetValue(), 
+        BSML::CreateIncrementSetting(container->get_transform(), "Text Rotation Y", 1, 1, getModConfig().RotationY.GetValue(), 
             [=](float value) {
                 getModConfig().RotationY.SetValue(value);
             }
         );
 
-        QuestUI::BeatSaberUI::CreateIncrementSetting(container->get_transform(), "Text Rotation Z", 1, 1, getModConfig().RotationZ.GetValue(), 
+        BSML::CreateIncrementSetting(container->get_transform(), "Text Rotation Z", 1, 1, getModConfig().RotationZ.GetValue(), 
             [=](float value) {
                 getModConfig().RotationZ.SetValue(value);
             }
         );
 
-        QuestUI::BeatSaberUI::CreateText(container->get_transform(), "");
+        BSML::Lite::CreateText(container->get_transform(), "");
 
-        auto testButton = QuestUI::BeatSaberUI::CreateUIButton(container->get_transform(), "Test Configuration", "PlayButton",
+        auto testButton = BSML::Lite::CreateUIButton(container->get_transform(), "Test Configuration", "PlayButton",
             [&]() {
                 StartTestLevel(this);
             }

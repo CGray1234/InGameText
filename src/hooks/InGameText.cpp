@@ -2,8 +2,10 @@
 #include "GlobalNamespace/PauseMenuManager.hpp"
 #include "GlobalNamespace/LevelBar.hpp"
 
-#include "questui/shared/BeatSaberUI.hpp"
-#include "questui/shared/QuestUI.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Settings.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Layout.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Text.hpp"
+#include "bsml/shared/BSML-Lite/Creation/Misc.hpp"
 
 #include "Config.hpp"
 
@@ -11,7 +13,7 @@
 
 UnityEngine::GameObject *screen;
 
-using namespace QuestUI::BeatSaberUI;
+using namespace BSML;
 
 MAKE_AUTO_HOOK_MATCH(InGameText, &GlobalNamespace::GameplayCoreInstaller::InstallBindings, void, GlobalNamespace::GameplayCoreInstaller *self) {
 

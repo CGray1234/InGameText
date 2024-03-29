@@ -4,6 +4,8 @@
 #include "HMUI/ViewController_AnimationDirection.hpp"
 #include "HMUI/ViewController_AnimationType.hpp"
 
+#include "bsml/shared/Helpers/creation.hpp"
+
 DEFINE_TYPE(InGameText, InGameTextFlowCoordinator);
 
 void InGameText::InGameTextFlowCoordinator::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
@@ -14,7 +16,7 @@ void InGameText::InGameTextFlowCoordinator::DidActivate(bool firstActivation, bo
 
         showBackButton = true;
 
-        inGameTextViewController = QuestUI::BeatSaberUI::CreateViewController<InGameText::InGameTextViewController*>();
+        inGameTextViewController = BSML::Helpers::CreateViewController<InGameText::InGameTextViewController*>();
         inGameTextViewController->flowCoordinator = this;
 
         currentViewController = nullptr;
