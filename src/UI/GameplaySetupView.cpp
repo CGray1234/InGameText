@@ -14,8 +14,6 @@
 #include "UnityEngine/UI/Button.hpp"
 #include "HMUI/ViewController.hpp"
 #include "HMUI/FlowCoordinator.hpp"
-#include "HMUI/ViewController_AnimationType.hpp"
-#include "HMUI/ViewController_AnimationDirection.hpp"
 
 #include "GlobalNamespace/SimpleLevelStarter.hpp"
 #include "UnityEngine/Resources.hpp"
@@ -29,6 +27,8 @@
 #include "bsml/shared/BSML-Lite/Creation/Buttons.hpp"
 #include "bsml/shared/BSML-Lite/Creation/Text.hpp"
 
+#include "UnityEngine/UI/ContentSizeFitter.hpp"
+
 DEFINE_TYPE(InGameText, gameplaySetupView);
 
 using namespace UnityEngine::UI;
@@ -37,17 +37,15 @@ using namespace BSML;
 using namespace BSML::Lite;
 
 void StartTestLevel(InGameText::gameplaySetupView* self) {
-    ArrayW<GlobalNamespace::SimpleLevelStarter*> levelStartArray = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::SimpleLevelStarter*>();
-    for (int i = 0; i < sizeof(levelStartArray); i++)
+    auto simpleLevelStarters = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::SimpleLevelStarter*>();
+    for (auto& starter : simpleLevelStarters)
     {
-        GlobalNamespace::SimpleLevelStarter* start = (GlobalNamespace::SimpleLevelStarter*)levelStartArray->values[i];
-        if (start->get_gameObject()->get_name()->Contains("PerformanceTestLevelButton"))
+        if (starter->get_gameObject()->get_name()->Contains("PerformanceTestLevelButton"))
         {
-            start->gameplayModifiers->zenMode = true;
-            start->level->songName = ("In-Game Text Config Test");
-            start->StartLevel();
+            starter->__cordl_internal_get__gameplayModifiers()->__cordl_internal_set__zenMode(true);
+            starter->StartLevel();
             return;
-        } 
+        }
     }
 }
 
@@ -88,9 +86,11 @@ void InGameText::gameplaySetupView::DidActivate(bool firstActivation) {
             getModConfig().TextSize.SetValue(value);
         }
     );
-    BSML::Lite::CreateUIButton(MiscLayout->get_transform(), "Test Configuration", "PlayButton", [&]() {
+    auto miscTest = BSML::Lite::CreateUIButton(MiscLayout->get_transform(), "Test Configuration", "PlayButton", [&]() {
         StartTestLevel(this);
     });
+    miscTest->set_interactable(false);
+    AddHoverHint(miscTest->get_gameObject(), "Feature disabled until further notice");
     miscBackButton = BSML::Lite::CreateUIButton(MiscLayout->get_transform(), "BACK", [=](){
         MiscLayout->get_gameObject()->SetActive(false);
         horizontalLayoutGroup->get_gameObject()->SetActive(true);
@@ -121,9 +121,11 @@ void InGameText::gameplaySetupView::DidActivate(bool firstActivation) {
             getModConfig().PositionZ.SetValue(value);
         }
     );
-    CreateUIButton(PositionLayout->get_transform(), "Test Configuration", "PlayButton", [&]() {
+    auto posTest = CreateUIButton(PositionLayout->get_transform(), "Test Configuration", "PlayButton", [&]() {
         StartTestLevel(this);
     });
+    posTest->set_interactable(false);
+    AddHoverHint(posTest->get_gameObject(), "Feature disabled until further notice");
     posBackButton = CreateUIButton(PositionLayout->get_transform(), "BACK", [=](){
         PositionLayout->get_gameObject()->SetActive(false);
         horizontalLayoutGroup->get_gameObject()->SetActive(true);
@@ -154,9 +156,11 @@ void InGameText::gameplaySetupView::DidActivate(bool firstActivation) {
             getModConfig().RotationZ.SetValue(value);
         }
     );
-    CreateUIButton(RotationLayout->get_transform(), "Test Configuration", "PlayButton", [&]() {
+    auto rotTest = CreateUIButton(RotationLayout->get_transform(), "Test Configuration", "PlayButton", [&]() {
         StartTestLevel(this);
     });
+    rotTest->set_interactable(false);
+    AddHoverHint(rotTest->get_gameObject(), "Feature disabled until further notice");
     rotBackButton = CreateUIButton(RotationLayout->get_transform(), "BACK", [=](){
         RotationLayout->get_gameObject()->SetActive(false);
         horizontalLayoutGroup->get_gameObject()->SetActive(true);

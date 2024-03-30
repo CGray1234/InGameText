@@ -1,8 +1,6 @@
 // From PinkCore: https://github.com/BSMGPink/PinkCore/blob/master/src/Utils/UIUtils.cpp
 #include "Utils/UIUtils.hpp"
 
-#include "questui/shared/BeatSaberUI.hpp"
-
 #include "UnityEngine/Texture.hpp"
 #include "UnityEngine/Texture2D.hpp"
 #include "UnityEngine/TextureWrapMode.hpp"
@@ -25,10 +23,10 @@ namespace UIUtils
 
         ButtonSpriteSwap* spriteSwap = button->GetComponent<ButtonSpriteSwap*>();
 
-        spriteSwap->highlightStateSprite = highlighted;
-        spriteSwap->pressedStateSprite = highlighted;
+        spriteSwap->__cordl_internal_set__highlightStateSprite(highlighted);
+        spriteSwap->__cordl_internal_set__pressedStateSprite(highlighted);
 
-        spriteSwap->disabledStateSprite = normal;
-        spriteSwap->normalStateSprite = normal;
+        spriteSwap->__cordl_internal_set__disabledStateSprite(normal);
+        spriteSwap->__cordl_internal_set__normalStateSprite(normal);
 	}
 }

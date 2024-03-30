@@ -1,8 +1,6 @@
 #include "UI/FlowCoordinator.hpp"
 #include "UI/ViewController.hpp"
 #include "GlobalNamespace/MenuTransitionsHelper.hpp"
-#include "HMUI/ViewController_AnimationDirection.hpp"
-#include "HMUI/ViewController_AnimationType.hpp"
 
 #include "bsml/shared/Helpers/creation.hpp"
 
@@ -12,9 +10,9 @@ void InGameText::InGameTextFlowCoordinator::DidActivate(bool firstActivation, bo
     using namespace HMUI;
 
     if (firstActivation) {
-        SetTitle(ID, ViewController::AnimationType::Out);
+        SetTitle(MOD_ID, ViewController::AnimationType::Out);
 
-        showBackButton = true;
+        set_showBackButton(true);
 
         inGameTextViewController = BSML::Helpers::CreateViewController<InGameText::InGameTextViewController*>();
         inGameTextViewController->flowCoordinator = this;
@@ -32,11 +30,11 @@ void InGameText::InGameTextFlowCoordinator::BackButtonWasPressed(
     using namespace UnityEngine;
 
     if (currentViewController) {
-        SetTitle(ID, ViewController::AnimationType::In);
+        SetTitle(MOD_ID, ViewController::AnimationType::In);
         ReplaceTopViewController(inGameTextViewController, this, this, nullptr, ViewController::AnimationType::Out, ViewController::AnimationDirection::Horizontal);
 
         currentViewController = nullptr;
     } else {
-        parentFlowCoordinator->DismissFlowCoordinator(this, ViewController::AnimationDirection::Horizontal, nullptr, false);
+        ____parentFlowCoordinator->DismissFlowCoordinator(this, ViewController::AnimationDirection::Horizontal, nullptr, false);
     }
 }

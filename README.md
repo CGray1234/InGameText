@@ -1,8 +1,9 @@
 # In-Game Text
 
-Add in some text in-game while you're playing a level! Like ImageFactory, but text
+Add fully-customizable text into your game!
 
-Video showcasing the mod here: https://www.youtube.com/watch?v=ww0STS9nfyc
+Use `qpm-rust s build` to build
+Same goes for `qpm-rust s copy` and `qpm-rust s qmod`
 
 ## Credits
 

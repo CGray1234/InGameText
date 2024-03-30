@@ -3,6 +3,8 @@
 
 #include "TMPro/TextMeshProUGUI.hpp"
 
+#include "UnityEngine/Resources.hpp"
+
 #include "bsml/shared/BSML-Lite/Creation/Image.hpp"
 #include "bsml/shared/BSML-Lite/Creation/Settings.hpp"
 #include "bsml/shared/BSML-Lite/Creation/Misc.hpp"
@@ -17,17 +19,15 @@
 DEFINE_TYPE(InGameText, MiscViewController);
 
 void StartTestLevel(InGameText::MiscViewController* self) {
-    ArrayW<GlobalNamespace::SimpleLevelStarter*> levelStartArray = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::SimpleLevelStarter*>();
-    for (int i = 0; i < sizeof(levelStartArray); i++)
+    auto simpleLevelStarters = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::SimpleLevelStarter*>();
+    for (auto& starter : simpleLevelStarters)
     {
-        GlobalNamespace::SimpleLevelStarter* start = (GlobalNamespace::SimpleLevelStarter*)levelStartArray->values[i];
-        if (start->get_gameObject()->get_name()->Contains("PerformanceTestLevelButton"))
+        if (starter->get_gameObject()->get_name()->Contains("PerformanceTestLevelButton"))
         {
-            start->gameplayModifiers->zenMode = true;
-            start->level->songName = ("In-Game Text Config Test");
-            start->StartLevel();
+            starter->__cordl_internal_get__gameplayModifiers()->__cordl_internal_set__zenMode(true);
+            starter->StartLevel();
             return;
-        } 
+        }
     }
 }
 
@@ -44,19 +44,25 @@ void InGameText::MiscViewController::DidActivate(
     if (firstActivation) {
         GameObject* container = CreateScrollableSettingsContainer(get_transform());
 
+        BSML::Lite::CreateToggle(container->get_transform(), "Enable In-Game Text", getModConfig().InGameTextEnabled.GetValue(), 
+            [=](bool value) {
+                getModConfig().InGameTextEnabled.SetValue(value);
+            }
+        );
+
         BSML::Lite::CreateStringSetting(container->get_transform(), "In-Game Text", getModConfig().InGameText.GetValue(),
             [=](std::string value) {
                 getModConfig().InGameText.SetValue(value);
             }
         );
 
-        BSML::CreateColorPicker(container->get_transform(), "Text Color", getModConfig().TextQolor.GetValue(),
+        BSML::Lite::CreateColorPicker(container->get_transform(), "Text Color", getModConfig().TextQolor.GetValue(),
             [=](UnityEngine::Color value) {
                 getModConfig().TextQolor.SetValue(value);
             }
         );
 
-        BSML::CreateIncrementSetting(container->get_transform(), "Text Size", 1, 0.5, getModConfig().TextSize.GetValue(),
+        BSML::Lite::CreateIncrementSetting(container->get_transform(), "Text Size", 1, 0.5, getModConfig().TextSize.GetValue(),
             [=](float value) {
                 getModConfig().TextSize.SetValue(value);
             }
