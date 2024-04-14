@@ -82,7 +82,5 @@ void InGameText::InGameTextViewController::DidActivate(
                 reinterpret_cast<InGameText::InGameTextFlowCoordinator*>(flowCoordinator)->currentViewController = BSML::Helpers::CreateViewController<InGameText::MiscViewController*>();
         });
         UIUtils::SwapButtonSprites(miscButton, Base64ToSprite(miscIcon), Base64ToSprite(miscSelected));
-
-        
     }
 }

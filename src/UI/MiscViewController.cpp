@@ -74,6 +74,6 @@ void InGameText::MiscViewController::DidActivate(
             [&]() {
                 StartTestLevel(this);
             }
-        );
+        )->set_interactable(false);;
     }
 }

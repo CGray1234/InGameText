@@ -51,8 +51,15 @@ void StartTestLevel(InGameText::gameplaySetupView* self) {
 
 void InGameText::gameplaySetupView::DidActivate(bool firstActivation) {
     if (!firstActivation) return;
+    auto verticalLayourGroup = CreateVerticalLayoutGroup(get_transform());
 
-    auto horizontalLayoutGroup = CreateHorizontalLayoutGroup(get_transform());
+    auto enableMod = CreateToggle(verticalLayoutGroup->get_transform(), "Enable In-Game Text", 
+        [=](bool value) {
+            getModConfig().InGameTextEnabled.SetValue(value);
+        }
+    );
+
+    auto horizontalLayoutGroup = CreateHorizontalLayoutGroup(verticalLayourGroup->get_transform());
     horizontalLayoutGroup->get_rectTransform()->set_anchoredPosition({0.0f, 0.0f});
     horizontalLayoutGroup->set_padding(RectOffset::New_ctor(2, 2, 2, 2));
     auto horizontalLayoutGroupElement = horizontalLayoutGroup->GetComponent<LayoutElement*>();

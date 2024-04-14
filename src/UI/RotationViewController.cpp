@@ -73,6 +73,6 @@ void InGameText::RotationViewController::DidActivate(
             [&]() {
                 StartTestLevel(this);
             }
-        );
+        )->set_interactable(false);;
     }
 }
