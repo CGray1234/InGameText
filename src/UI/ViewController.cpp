@@ -40,6 +40,7 @@ void InGameText::InGameTextViewController::DidActivate(
 
     if (firstActivation) {
         VerticalLayoutGroup* verticalLayoutGroup = CreateVerticalLayoutGroup(get_transform());
+        verticalLayoutGroup->set_padding(RectOffset::New_ctor(8, 0, -10, 5));
 
         auto enableMod = CreateToggle(verticalLayoutGroup->get_transform(), "Enable In-Game Text", 
             [=](bool value) {
