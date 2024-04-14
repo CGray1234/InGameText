@@ -51,7 +51,7 @@ void StartTestLevel(InGameText::gameplaySetupView* self) {
 
 void InGameText::gameplaySetupView::DidActivate(bool firstActivation) {
     if (!firstActivation) return;
-    auto verticalLayourGroup = CreateVerticalLayoutGroup(get_transform());
+    auto verticalLayoutGroup = CreateVerticalLayoutGroup(get_transform());
 
     auto enableMod = CreateToggle(verticalLayoutGroup->get_transform(), "Enable In-Game Text", 
         [=](bool value) {
