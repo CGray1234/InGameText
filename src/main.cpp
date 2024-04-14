@@ -32,7 +32,7 @@ Configuration& getConfig() {
 
 using namespace BSML;
 
-BSML::FloatingScreen *screen;
+HMUI::Screen *screen;
 
 MAKE_HOOK_MATCH(GameplayCoreInstaller_InstallBindings, &GlobalNamespace::GameplayCoreInstaller::InstallBindings, void, GlobalNamespace::GameplayCoreInstaller *self) {
 
@@ -42,14 +42,12 @@ MAKE_HOOK_MATCH(GameplayCoreInstaller_InstallBindings, &GlobalNamespace::Gamepla
 
     if (getModConfig().InGameTextEnabled.GetValue() == true) {
 
-        auto TextModel = Lite::CreateText(screen->get_transform(), getModConfig().InGameText.GetValue(), Vector2::get_zero(), Vector2::get_zero());
+        auto TextModel = Lite::CreateText(screen->get_gameObject()->get_transform(), getModConfig().InGameText.GetValue(), Vector2::get_zero(), Vector2::get_zero());
 
         screen->get_gameObject()->set_active(true);
 
         TextModel->set_alignment(TMPro::TextAlignmentOptions::Center);
-        
         TextModel->set_fontSize(getModConfig().TextSize.GetValue());
-
         TextModel->set_color(getModConfig().TextQolor.GetValue());
         
     } else {
