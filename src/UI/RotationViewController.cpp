@@ -43,12 +43,6 @@ void InGameText::RotationViewController::DidActivate(
     if (firstActivation) {
         GameObject* container = CreateScrollableSettingsContainer(get_transform());
 
-        BSML::Lite::CreateToggle(container->get_transform(), "Enable In-Game Text", getModConfig().InGameTextEnabled.GetValue(), 
-            [=](bool value) {
-                getModConfig().InGameTextEnabled.SetValue(value);
-            }
-        );
-
         BSML::Lite::CreateIncrementSetting(container->get_transform(), "Text Rotation X", 1, 1, getModConfig().RotationX.GetValue(), 
             [=](float value) {
                 getModConfig().RotationX.SetValue(value);

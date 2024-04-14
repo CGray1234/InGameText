@@ -100,7 +100,7 @@ void InGameText::gameplaySetupView::DidActivate(bool firstActivation) {
     AddHoverHint(miscTest->get_gameObject(), "Feature disabled until further notice");
     miscBackButton = BSML::Lite::CreateUIButton(MiscLayout->get_transform(), "BACK", [=](){
         MiscLayout->get_gameObject()->SetActive(false);
-        horizontalLayoutGroup->get_gameObject()->SetActive(true);
+        verticalLayoutGroup->get_gameObject()->SetActive(true);
     });
     MiscLayout->get_gameObject()->SetActive(false);
 
@@ -135,7 +135,7 @@ void InGameText::gameplaySetupView::DidActivate(bool firstActivation) {
     AddHoverHint(posTest->get_gameObject(), "Feature disabled until further notice");
     posBackButton = CreateUIButton(PositionLayout->get_transform(), "BACK", [=](){
         PositionLayout->get_gameObject()->SetActive(false);
-        horizontalLayoutGroup->get_gameObject()->SetActive(true);
+        verticalLayoutGroup->get_gameObject()->SetActive(true);
     });
     PositionLayout->get_gameObject()->SetActive(false);
 
@@ -170,25 +170,25 @@ void InGameText::gameplaySetupView::DidActivate(bool firstActivation) {
     AddHoverHint(rotTest->get_gameObject(), "Feature disabled until further notice");
     rotBackButton = CreateUIButton(RotationLayout->get_transform(), "BACK", [=](){
         RotationLayout->get_gameObject()->SetActive(false);
-        horizontalLayoutGroup->get_gameObject()->SetActive(true);
+        verticalLayoutGroup->get_gameObject()->SetActive(true);
     });
     RotationLayout->get_gameObject()->SetActive(false);
 
     MiscButton = CreateUIButton(horizontalLayoutGroup->get_transform(), "", "SettingsButton", [=]() {
         MiscLayout->get_gameObject()->SetActive(true);
-        horizontalLayoutGroup->get_gameObject()->SetActive(false);
+        verticalLayoutGroup->get_gameObject()->SetActive(false);
     });
     UIUtils::SwapButtonSprites(MiscButton, BSML::Lite::Base64ToSprite(miscIcon), BSML::Lite::Base64ToSprite(miscSelected));
 
     PositionButton = CreateUIButton(horizontalLayoutGroup->get_transform(), "", "SettingsButton", [=]() {
         PositionLayout->get_gameObject()->SetActive(true);
-        horizontalLayoutGroup->get_gameObject()->SetActive(false);
+        verticalLayoutGroup->get_gameObject()->SetActive(false);
     });
     UIUtils::SwapButtonSprites(PositionButton, BSML::Lite::Base64ToSprite(posIcon), BSML::Lite::Base64ToSprite(posSelected));
     
     RotationButton = CreateUIButton(horizontalLayoutGroup->get_transform(), "", "SettingsButton", [=]() {
         RotationLayout->get_gameObject()->SetActive(true);
-        horizontalLayoutGroup->get_gameObject()->SetActive(false);
+        verticalLayoutGroup->get_gameObject()->SetActive(false);
     });
     UIUtils::SwapButtonSprites(RotationButton, BSML::Lite::Base64ToSprite(rotIcon), BSML::Lite::Base64ToSprite(rotSelected));
 }

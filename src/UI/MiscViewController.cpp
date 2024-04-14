@@ -44,12 +44,6 @@ void InGameText::MiscViewController::DidActivate(
     if (firstActivation) {
         GameObject* container = CreateScrollableSettingsContainer(get_transform());
 
-        BSML::Lite::CreateToggle(container->get_transform(), "Enable In-Game Text", getModConfig().InGameTextEnabled.GetValue(), 
-            [=](bool value) {
-                getModConfig().InGameTextEnabled.SetValue(value);
-            }
-        );
-
         BSML::Lite::CreateStringSetting(container->get_transform(), "In-Game Text", getModConfig().InGameText.GetValue(),
             [=](std::string value) {
                 getModConfig().InGameText.SetValue(value);

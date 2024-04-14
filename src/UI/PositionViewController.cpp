@@ -42,12 +42,6 @@ void InGameText::PositionViewController::DidActivate(
     if (firstActivation) {
         GameObject* container = CreateScrollableSettingsContainer(get_transform());
 
-        BSML::Lite::CreateToggle(container->get_transform(), "Enable In-Game Text", getModConfig().InGameTextEnabled.GetValue(), 
-            [=](bool value) {
-                getModConfig().InGameTextEnabled.SetValue(value);
-            }
-        );
-
         BSML::Lite::CreateIncrementSetting(container->get_transform(), "Text Position X", 1, 0.1, getModConfig().PositionX.GetValue(), 
             [=](float value) {
                 getModConfig().PositionX.SetValue(value);

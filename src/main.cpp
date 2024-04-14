@@ -38,7 +38,7 @@ MAKE_HOOK_MATCH(GameplayCoreInstaller_InstallBindings, &GlobalNamespace::Gamepla
 
     GameplayCoreInstaller_InstallBindings(self);
 
-    screen = BSML::Lite::CreateFloatingScreen(UnityEngine::Vector2(1000, 100.0f), UnityEngine::Vector3(getModConfig().PositionX.GetValue(), getModConfig().PositionY.GetValue(), getModConfig().PositionZ.GetValue()), UnityEngine::Vector3(getModConfig().RotationX.GetValue(), getModConfig().RotationY.GetValue(), getModConfig().RotationZ.GetValue()), 0.0f, false, false);
+    screen = BSML::Lite::CreateFloatingScreen(UnityEngine::Vector2(1000, 1000.0f), UnityEngine::Vector3(getModConfig().PositionX.GetValue(), getModConfig().PositionY.GetValue(), getModConfig().PositionZ.GetValue()), UnityEngine::Vector3(getModConfig().RotationX.GetValue(), getModConfig().RotationY.GetValue(), getModConfig().RotationZ.GetValue()), 0.0f, false, false);
 
     if (getModConfig().InGameTextEnabled.GetValue() == true) {
 
@@ -103,6 +103,7 @@ extern "C" void load() {
     getModConfig().Init(modInfo);
     BSML::Init();
     BSML::Register::RegisterSettingsMenu<InGameText::InGameTextFlowCoordinator*>("In-Game Text");
+    BSML::Register::RegisterMainMenu<InGameText::InGameTextFlowCoordinator*>("In-Game Text");
     BSML::Register::RegisterGameplaySetupTab<InGameText::gameplaySetupView*>("In-Game Text");
 
     logger.info("Installing Hooks...");
