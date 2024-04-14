@@ -59,7 +59,7 @@ void InGameText::gameplaySetupView::DidActivate(bool firstActivation) {
         }
     );
 
-    auto horizontalLayoutGroup = CreateHorizontalLayoutGroup(verticalLayourGroup->get_transform());
+    auto horizontalLayoutGroup = CreateHorizontalLayoutGroup(verticalLayoutGroup->get_transform());
     horizontalLayoutGroup->get_rectTransform()->set_anchoredPosition({0.0f, 0.0f});
     horizontalLayoutGroup->set_padding(RectOffset::New_ctor(2, 2, 2, 2));
     auto horizontalLayoutGroupElement = horizontalLayoutGroup->GetComponent<LayoutElement*>();
