@@ -39,7 +39,16 @@ void InGameText::InGameTextViewController::DidActivate(
     using namespace UnityEngine::UI;
 
     if (firstActivation) {
-        HorizontalLayoutGroup* horizontalLayoutGroup = CreateHorizontalLayoutGroup(get_transform());
+        VerticalLayoutGroup* verticalLayoutGroup = CreateVerticalLayoutGroup(get_transform());
+        verticalLayoutGroup->set_padding(RectOffset::New_ctor(8, 0, -5, 5));
+
+        auto enableMod = CreateToggle(verticalLayoutGroup->get_transform(), "Enable In-Game Text", 
+            [=](bool value) {
+                getModConfig().InGameTextEnabled.SetValue(value);
+            }
+        );
+        
+        HorizontalLayoutGroup* horizontalLayoutGroup = CreateHorizontalLayoutGroup(verticalLayoutGroup->get_transform());
         horizontalLayoutGroup->get_rectTransform()->set_anchoredPosition({0.0f, 0.0f});
         horizontalLayoutGroup->set_padding(RectOffset::New_ctor(2, 2, 2, 2));
         auto horizontalLayoutGroupElement = horizontalLayoutGroup->GetComponent<LayoutElement*>();
@@ -74,13 +83,6 @@ void InGameText::InGameTextViewController::DidActivate(
         });
         UIUtils::SwapButtonSprites(miscButton, Base64ToSprite(miscIcon), Base64ToSprite(miscSelected));
 
-        VerticalLayoutGroup* verticalLayoutGroup = CreateVerticalLayoutGroup(horizontalLayoutGroup->get_transform());
-        verticalLayoutGroup->set_padding(RectOffset::New_ctor(8, 0, -5, 5));
-
-        auto enableMod = CreateToggle(verticalLayoutGroup->get_transform(), "Enable In-Game Text", 
-            [=](bool value) {
-                getModConfig().InGameTextEnabled.SetValue(value);
-            }
-        );
+        
     }
 }

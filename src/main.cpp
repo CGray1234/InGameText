@@ -26,9 +26,9 @@ Configuration& getConfig() {
 #include "bsml/shared/BSML-Lite/Creation/Text.hpp"
 #include "bsml/shared/BSML-Lite/Creation/Misc.hpp"
 
-#include "Config.hpp"
+#include "UnityEngine/UI/ContentSizeFitter.hpp"
 
-#include "beatsaber-hook/shared/utils/hooking.hpp"
+#include "Config.hpp"
 
 using namespace BSML;
 
@@ -38,11 +38,14 @@ MAKE_HOOK_MATCH(GameplayCoreInstaller_InstallBindings, &GlobalNamespace::Gamepla
 
     GameplayCoreInstaller_InstallBindings(self);
 
-    screen = BSML::Lite::CreateFloatingScreen(UnityEngine::Vector2(99999999.0f, 99999999.0f), UnityEngine::Vector3(getModConfig().PositionX.GetValue(), getModConfig().PositionY.GetValue(), getModConfig().PositionZ.GetValue()), UnityEngine::Vector3(getModConfig().RotationX.GetValue(), getModConfig().RotationY.GetValue(), getModConfig().RotationZ.GetValue()), 0.0f, false, false);
+    screen = BSML::Lite::CreateFloatingScreen(UnityEngine::Vector2(1000, 100.0f), UnityEngine::Vector3(getModConfig().PositionX.GetValue(), getModConfig().PositionY.GetValue(), getModConfig().PositionZ.GetValue()), UnityEngine::Vector3(getModConfig().RotationX.GetValue(), getModConfig().RotationY.GetValue(), getModConfig().RotationZ.GetValue()), 0.0f, false, false);
 
     if (getModConfig().InGameTextEnabled.GetValue() == true) {
 
-        auto TextModel = Lite::CreateText(screen->get_gameObject()->get_transform(), getModConfig().InGameText.GetValue(), Vector2::get_zero(), Vector2::get_zero());
+        auto* horizontalLayoutGroup = Lite::CreateVerticalLayoutGroup(screen->get_transform());
+        horizontalLayoutGroup->GetComponent<UnityEngine::UI::ContentSizeFitter*>()->set_verticalFit(UnityEngine::UI::ContentSizeFitter::FitMode::PreferredSize);
+        
+        auto TextModel = Lite::CreateText(horizontalLayoutGroup->get_gameObject()->get_transform(), getModConfig().InGameText.GetValue(), Vector2::get_zero(), Vector2::get_zero());
 
         screen->get_gameObject()->set_active(true);
 
