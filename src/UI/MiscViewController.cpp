@@ -74,6 +74,8 @@ void InGameText::MiscViewController::DidActivate(
             [&]() {
                 StartTestLevel(this);
             }
-        )->set_interactable(false);;
+        );
+        testButton->set_interactable(false);
+        AddHoverHint(testButton->get_gameObject(), "Feature disabled until further notice");
     }
 }
