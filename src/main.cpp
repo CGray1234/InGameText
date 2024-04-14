@@ -103,7 +103,7 @@ extern "C" void load() {
     getModConfig().Init(modInfo);
     BSML::Init();
     BSML::Register::RegisterSettingsMenu<InGameText::InGameTextFlowCoordinator*>("In-Game Text");
-    BSML::Register::RegisterMainMenu<InGameText::InGameTextFlowCoordinator*>("In-Game Text");
+    BSML::Register::RegisterMainMenu<InGameText::InGameTextFlowCoordinator*>("In-Game Text", "Add some fully-customizable text into your game!");
     BSML::Register::RegisterGameplaySetupTab<InGameText::gameplaySetupView*>("In-Game Text");
 
     logger.info("Installing Hooks...");
